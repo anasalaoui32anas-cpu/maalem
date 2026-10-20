@@ -1,6 +1,6 @@
 // معلّم قريب — Service Worker
 // عند تعديل أي ملف، غيّر رقم الإصدار هنا ليحصل المستخدمون على النسخة الجديدة.
-const CACHE = "warsha-v8";
+const CACHE = "warsha-v13";
 const ASSETS = ["./", "./index.html", "./manifest.json", "./icon.svg", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", e => {

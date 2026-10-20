@@ -686,6 +686,44 @@ ul.plain{margin:0;padding-inline-start:1.1em;display:flex;flex-direction:column;
   .sheet .receipt, .sheet .receipt *{visibility:visible}
   .sheet .receipt{position:absolute;inset:0 0 auto 0;box-shadow:none;border:1px solid #ccc}
 }
+
+/* صفحة الدعوة */
+.promo-frame{border-radius:var(--r);overflow:hidden;box-shadow:var(--sh2);border:1px solid var(--line);background:#17222A;line-height:0}
+.promo-canvas{display:block;width:100%;height:auto;aspect-ratio:1/1}
+.promo-text summary{display:flex;gap:6px;align-items:baseline}
+.promo-body{white-space:pre-wrap;font-size:.92rem;line-height:1.7;margin:12px 0;max-height:280px;overflow:auto;background:var(--surface-2);border-radius:var(--r-sm);padding:12px}
+
+/* الصورة الشخصية والغلاف */
+.av-img{background-size:cover;background-position:center;background-color:var(--surface-2);color:transparent}
+.cover-band{position:relative}
+.cover-band.has-img{height:auto;aspect-ratio:8/3;background-size:cover !important;background-position:center !important}
+.av-wrap{position:relative;display:inline-block}
+.pic-btn{display:inline-flex;align-items:center;gap:6px;border:0;cursor:pointer;background:rgba(17,24,29,.72);color:#fff;font:inherit;font-size:.82rem;font-weight:600;border-radius:999px;padding:7px 11px;backdrop-filter:blur(4px)}
+.cover-btn{position:absolute;bottom:10px;inset-inline-end:10px}
+.av-btn{position:absolute;bottom:2px;inset-inline-start:-2px;width:36px;height:36px;padding:0;justify-content:center;border:3px solid var(--surface);background:var(--ink)}
+
+/* التسويق بالعمولة */
+.aff-url{background:var(--surface-2);border:1px dashed var(--line);border-radius:var(--r-sm);padding:10px 12px;font-size:.88rem;word-break:break-all;user-select:all}
+
+/* الرسومات التعبيرية */
+.art{display:block}
+.art svg{display:block;width:100%;height:auto}
+.art .l{fill:var(--accent-soft)} .art .k{fill:var(--ink)} .art .s{fill:var(--surface-2)} .art .m{fill:var(--line)}
+.art .w{fill:var(--surface);stroke:var(--line);stroke-width:1.5} .art .a{fill:var(--accent)} .art .ok{fill:var(--ok)}
+.art .sa{fill:none;stroke:var(--accent);stroke-linecap:round;stroke-linejoin:round} .art .sk{fill:none;stroke:var(--ink);stroke-linecap:round}
+.art-empty{width:104px;margin-inline:auto;opacity:.95}
+.how{display:flex;flex-direction:column;gap:12px}
+.how h2{font-size:1.15rem}
+.how-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.how-step{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 8px 12px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;box-shadow:var(--sh1);min-width:0}
+.how-step .art{width:100%;max-width:120px}
+.how-step b{font-size:.86rem;line-height:1.35}
+.season{position:relative;display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-inline-start:4px solid var(--accent);border-radius:var(--r);padding:12px 12px 12px 40px;box-shadow:var(--sh1)}
+.season-art{flex:none;width:96px}
+.season-t{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
+.season-t b{font-family:var(--display);font-size:1.05rem}
+.season-x{position:absolute;top:6px;inset-inline-end:6px;width:30px;height:30px;border:0;background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center;border-radius:50%}
+.season-x svg{width:16px;height:16px}
 </style>
 </head>
 <body>
@@ -712,7 +750,7 @@ import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager
 
 // ---------------- ثوابت ----------------
 const APP_NAME = "معلّم قريب";
-const DATA = {"regions": [{"id": "tta", "name": "طنجة-تطوان-الحسيمة", "cities": [["tanger", "طنجة-أصيلة"], ["mdiq", "المضيق-الفنيدق"], ["tetouan", "تطوان"], ["fahs-anjra", "الفحص-أنجرة"], ["larache", "العرائش"], ["alhoceima", "الحسيمة"], ["chefchaouen", "شفشاون"], ["ouezzane", "وزان"]]}, {"id": "oriental", "name": "الشرق", "cities": [["oujda", "وجدة-أنجاد"], ["nador", "الناظور"], ["driouch", "الدريوش"], ["jerada", "جرادة"], ["berkane", "بركان"], ["taourirt", "تاوريرت"], ["guercif", "جرسيف"], ["figuig", "فجيج"]]}, {"id": "fes-meknes", "name": "فاس-مكناس", "cities": [["fes", "فاس"], ["meknes", "مكناس"], ["el-hajeb", "الحاجب"], ["ifrane", "إفران"], ["moulay-yacoub", "مولاي يعقوب"], ["sefrou", "صفرو"], ["boulemane", "بولمان"], ["taounate", "تاونات"], ["taza", "تازة"]]}, {"id": "rsk", "name": "الرباط-سلا-القنيطرة", "cities": [["rabat", "الرباط"], ["sale", "سلا"], ["skhirate-temara", "الصخيرات-تمارة"], ["kenitra", "القنيطرة"], ["khemisset", "الخميسات"], ["sidi-kacem", "سيدي قاسم"], ["sidi-slimane", "سيدي سليمان"]]}, {"id": "bmk", "name": "بني ملال-خنيفرة", "cities": [["beni-mellal", "بني ملال"], ["azilal", "أزيلال"], ["fquih-ben-salah", "الفقيه بن صالح"], ["khenifra", "خنيفرة"], ["khouribga", "خريبكة"]]}, {"id": "cs", "name": "الدار البيضاء-سطات", "cities": [["casablanca", "الدار البيضاء"], ["mohammedia", "المحمدية"], ["el-jadida", "الجديدة"], ["nouaceur", "النواصر"], ["mediouna", "مديونة"], ["benslimane", "بنسليمان"], ["berrechid", "برشيد"], ["settat", "سطات"], ["sidi-bennour", "سيدي بنور"]]}, {"id": "ms", "name": "مراكش-آسفي", "cities": [["marrakech", "مراكش"], ["chichaoua", "شيشاوة"], ["al-haouz", "الحوز"], ["kelaa-sraghna", "قلعة السراغنة"], ["essaouira", "الصويرة"], ["rehamna", "الرحامنة"], ["safi", "آسفي"], ["youssoufia", "اليوسفية"]]}, {"id": "dt", "name": "درعة-تافيلالت", "cities": [["errachidia", "الرشيدية"], ["ouarzazate", "ورزازات"], ["midelt", "ميدلت"], ["tinghir", "تنغير"], ["zagora", "زاكورة"]]}, {"id": "sm", "name": "سوس-ماسة", "cities": [["agadir", "أكادير إداوتنان"], ["inezgane", "إنزكان-آيت ملول"], ["chtouka", "اشتوكة-آيت باها"], ["taroudant", "تارودانت"], ["tiznit", "تيزنيت"], ["tata", "طاطا"]]}, {"id": "gon", "name": "كلميم-واد نون", "cities": [["guelmim", "كلميم"], ["assa-zag", "أسا-الزاك"], ["tan-tan", "طانطان"], ["sidi-ifni", "سيدي إفني"]]}, {"id": "lsh", "name": "العيون-الساقية الحمراء", "cities": [["laayoune", "العيون"], ["boujdour", "بوجدور"], ["tarfaya", "طرفاية"], ["smara", "السمارة"]]}, {"id": "dod", "name": "الداخلة-وادي الذهب", "cities": [["oued-eddahab", "وادي الذهب"], ["aousserd", "أوسرد"]]}], "trades": [{"id": "mechanic", "name": "ميكانيكي السيارات", "short": "ميكانيكي", "places": ["road", "garage", "home"], "cats": [["engine", "المحرك"], ["brakes", "الفرامل"], ["electric", "كهرباء السيارة"], ["battery", "البطارية"], ["gearbox", "علبة السرعة"], ["tyres", "العجلات والإطارات"], ["cooling", "التبريد والسخونة"], ["ac", "مكيف السيارة"], ["oil", "تسريب زيت"], ["suspension", "الأمورتيسور والمقود"], ["other", "أخرى"]], "syn": ["سيارة", "طونوبيل", "طوموبيل", "موطور", "محرك", "فران", "فرامل", "باطري", "بطارية", "روضة", "عجلة", "بنو", "ديباناج", "زيت", "فيتيس", "كليماتيزور السيارة"]}, {"id": "plumber", "name": "سبّاك (رصاص)", "short": "سبّاك", "places": ["home", "site"], "cats": [["leak", "تسرب الماء"], ["heater", "سخان الماء (الشوفو)"], ["clog", "انسداد القنوات"], ["install", "تركيب (مغسلة، مرحاض، دوش)"], ["pump", "المضخة والخزان"], ["other", "أخرى"]], "syn": ["الما", "الماء", "روبيني", "قادوس", "شوفو", "سخان", "تسرب", "مغسلة", "مرحاض", "دوش", "بومبة", "مضخة"]}, {"id": "electrician", "name": "كهربائي", "short": "كهربائي", "places": ["home", "site"], "cats": [["outage", "انقطاع التيار"], ["install", "تركيب كهرباء جديدة"], ["meter", "العدّاد والقاطع (الديسجونكتور)"], ["lighting", "الإنارة والمقابس"], ["shortcircuit", "تماس كهربائي"], ["other", "أخرى"]], "syn": ["الضو", "الضوء", "تريسيتي", "كهرباء", "كونطور", "عداد", "بريز", "ديسجونكتور", "قاطع", "لامبة", "تماس"]}, {"id": "carpenter", "name": "نجار", "short": "نجار", "places": ["home", "site", "garage"], "cats": [["doors", "الأبواب"], ["kitchen", "مطبخ وخزانات"], ["furniture", "أثاث"], ["repair", "إصلاح وصيانة"], ["other", "أخرى"]], "syn": ["خشب", "نجارة", "باب خشب", "مطبخ", "بلاكار", "خزانة", "أثاث"]}, {"id": "painter", "name": "صبّاغ", "short": "صبّاغ", "places": ["home", "site"], "cats": [["interior", "صباغة داخلية"], ["exterior", "صباغة الواجهة"], ["waterproof", "العزل ضد الرطوبة (الإيطانشيتي)"], ["decor", "ديكور وجبص"], ["other", "أخرى"]], "syn": ["صباغة", "صبغة", "دهان", "جبص", "رطوبة", "ايطانشيتي", "ديكور"]}, {"id": "mason", "name": "بنّاء", "short": "بنّاء", "places": ["home", "site"], "cats": [["build", "بناء"], ["renovation", "ترميم وإصلاح"], ["plaster", "التلبيس"], ["roof", "السطح والتسربات"], ["other", "أخرى"]], "syn": ["بني", "بناء", "ياجور", "سيما", "تلبيس", "سطح", "ترميم"]}, {"id": "welder", "name": "حدّاد", "short": "حدّاد", "places": ["home", "site", "garage"], "cats": [["doors", "أبواب حديدية"], ["windows", "شبابيك وحماية"], ["railing", "درابزين"], ["repair", "لحام وإصلاح"], ["other", "أخرى"]], "syn": ["حديد", "سودور", "لحام", "شرجم", "حماية", "درابزين", "باب حديد"]}, {"id": "tiler", "name": "زلايجي", "short": "زلايجي", "places": ["home", "site"], "cats": [["floor", "الأرضية"], ["wall", "الجدران"], ["bathroom", "الحمام والمطبخ"], ["repair", "إصلاح زليج مكسور"], ["other", "أخرى"]], "syn": ["زليج", "كارو", "زلايجي", "حمام", "أرضية"]}, {"id": "aluminium", "name": "ألمنيوم", "short": "ألمنيوم", "places": ["home", "site", "garage"], "cats": [["windows", "نوافذ"], ["doors", "أبواب"], ["kitchen", "مطبخ ألمنيوم"], ["repair", "إصلاح وتعديل"], ["other", "أخرى"]], "syn": ["ألومينيوم", "ألمنيوم", "نوافذ", "سيلكون", "باب ألمنيوم"]}, {"id": "hvac", "name": "التبريد والتكييف", "short": "تكييف", "places": ["home", "site"], "cats": [["ac_install", "تركيب مكيف"], ["ac_repair", "إصلاح مكيف"], ["gas", "شحن الغاز"], ["fridge", "ثلاجة ومجمّد"], ["other", "أخرى"]], "syn": ["كليماتيزور", "مكيف", "تكييف", "غاز", "فريجيدير", "مجمد"]}, {"id": "appliances", "name": "الأجهزة المنزلية", "short": "أجهزة منزلية", "places": ["home", "garage"], "cats": [["washer", "آلة الغسيل"], ["fridge", "الثلاجة"], ["oven", "الفرن والطباخة"], ["tv", "التلفاز"], ["small", "أجهزة صغيرة"], ["other", "أخرى"]], "syn": ["ماشينة", "آلة الصابون", "آلة الغسيل", "ثلاجة", "فرن", "طباخة", "تلفزة", "تلفاز"]}, {"id": "locksmith", "name": "الأقفال والمفاتيح", "short": "أقفال", "places": ["home", "road"], "cats": [["lockout", "باب مغلق"], ["change", "تغيير القفل"], ["car_key", "مفتاح سيارة"], ["safe", "خزنة"], ["other", "أخرى"]], "syn": ["ساروت", "مفتاح", "قفل", "باب مسدود", "باب مغلق", "خزنة", "سرير"]}, {"id": "satellite", "name": "البارابول والشبكات", "short": "بارابول", "places": ["home", "site"], "cats": [["dish", "البارابول"], ["wifi", "الإنترنت والويفي"], ["cameras", "كاميرات المراقبة"], ["intercom", "الأنترفون"], ["other", "أخرى"]], "syn": ["بارابول", "انترنيت", "إنترنت", "ويفي", "wifi", "كاميرا", "أنترفون", "ريزو"]}], "places": [["road", "على الطريق"], ["garage", "في محل الحرفي"], ["home", "في المنزل"], ["site", "في محل أو ورش"]], "partnerCats": [["parts", "قطع غيار السيارات"], ["tyres", "الإطارات"], ["oil", "الزيوت"], ["tow", "الديباناج"], ["insurance", "التأمين"], ["building", "مواد البناء"], ["plumbel", "مواد السباكة والكهرباء"], ["appliance", "قطع غيار الأجهزة"], ["paint", "الصباغة والديكور"]], "groups": [{"id": "car", "name": "السيارة والطوارئ", "desc": "أعطاب السيارة، الأبواب المغلقة والمفاتيح", "trades": ["mechanic", "locksmith"]}, {"id": "water", "name": "الماء والكهرباء والتبريد", "desc": "تسربات، انقطاع التيار، السخانات والمكيفات", "trades": ["plumber", "electrician", "hvac"]}, {"id": "devices", "name": "الأجهزة والشبكات", "desc": "آلة الغسيل، الثلاجة، البارابول والإنترنت", "trades": ["appliances", "satellite"]}, {"id": "build", "name": "البناء والتشطيب", "desc": "البناء، الزليج، الصباغة والعزل", "trades": ["mason", "tiler", "painter"]}, {"id": "wood", "name": "النجارة والحدادة والألمنيوم", "desc": "الأبواب، النوافذ، المطابخ والأثاث", "trades": ["carpenter", "welder", "aluminium"]}], "popular": [["plumber", "leak"], ["electrician", "outage"], ["mechanic", "battery"], ["mechanic", "tyres"], ["locksmith", "lockout"], ["hvac", "ac_repair"], ["appliances", "washer"], ["painter", "waterproof"]]};
+const DATA = {"regions": [{"id": "tta", "name": "طنجة-تطوان-الحسيمة", "cities": [["tanger", "طنجة-أصيلة"], ["mdiq", "المضيق-الفنيدق"], ["tetouan", "تطوان"], ["fahs-anjra", "الفحص-أنجرة"], ["larache", "العرائش"], ["alhoceima", "الحسيمة"], ["chefchaouen", "شفشاون"], ["ouezzane", "وزان"]]}, {"id": "oriental", "name": "الشرق", "cities": [["oujda", "وجدة-أنجاد"], ["nador", "الناظور"], ["driouch", "الدريوش"], ["jerada", "جرادة"], ["berkane", "بركان"], ["taourirt", "تاوريرت"], ["guercif", "جرسيف"], ["figuig", "فجيج"]]}, {"id": "fes-meknes", "name": "فاس-مكناس", "cities": [["fes", "فاس"], ["meknes", "مكناس"], ["el-hajeb", "الحاجب"], ["ifrane", "إفران"], ["moulay-yacoub", "مولاي يعقوب"], ["sefrou", "صفرو"], ["boulemane", "بولمان"], ["taounate", "تاونات"], ["taza", "تازة"]]}, {"id": "rsk", "name": "الرباط-سلا-القنيطرة", "cities": [["rabat", "الرباط"], ["sale", "سلا"], ["skhirate-temara", "الصخيرات-تمارة"], ["kenitra", "القنيطرة"], ["khemisset", "الخميسات"], ["sidi-kacem", "سيدي قاسم"], ["sidi-slimane", "سيدي سليمان"]]}, {"id": "bmk", "name": "بني ملال-خنيفرة", "cities": [["beni-mellal", "بني ملال"], ["azilal", "أزيلال"], ["fquih-ben-salah", "الفقيه بن صالح"], ["khenifra", "خنيفرة"], ["khouribga", "خريبكة"]]}, {"id": "cs", "name": "الدار البيضاء-سطات", "cities": [["casablanca", "الدار البيضاء"], ["mohammedia", "المحمدية"], ["el-jadida", "الجديدة"], ["nouaceur", "النواصر"], ["mediouna", "مديونة"], ["benslimane", "بنسليمان"], ["berrechid", "برشيد"], ["settat", "سطات"], ["sidi-bennour", "سيدي بنور"]]}, {"id": "ms", "name": "مراكش-آسفي", "cities": [["marrakech", "مراكش"], ["chichaoua", "شيشاوة"], ["al-haouz", "الحوز"], ["kelaa-sraghna", "قلعة السراغنة"], ["essaouira", "الصويرة"], ["rehamna", "الرحامنة"], ["safi", "آسفي"], ["youssoufia", "اليوسفية"]]}, {"id": "dt", "name": "درعة-تافيلالت", "cities": [["errachidia", "الرشيدية"], ["ouarzazate", "ورزازات"], ["midelt", "ميدلت"], ["tinghir", "تنغير"], ["zagora", "زاكورة"]]}, {"id": "sm", "name": "سوس-ماسة", "cities": [["agadir", "أكادير إداوتنان"], ["inezgane", "إنزكان-آيت ملول"], ["chtouka", "اشتوكة-آيت باها"], ["taroudant", "تارودانت"], ["tiznit", "تيزنيت"], ["tata", "طاطا"]]}, {"id": "gon", "name": "كلميم-واد نون", "cities": [["guelmim", "كلميم"], ["assa-zag", "أسا-الزاك"], ["tan-tan", "طانطان"], ["sidi-ifni", "سيدي إفني"]]}, {"id": "lsh", "name": "العيون-الساقية الحمراء", "cities": [["laayoune", "العيون"], ["boujdour", "بوجدور"], ["tarfaya", "طرفاية"], ["smara", "السمارة"]]}, {"id": "dod", "name": "الداخلة-وادي الذهب", "cities": [["oued-eddahab", "وادي الذهب"], ["aousserd", "أوسرد"]]}], "trades": [{"id": "mechanic", "name": "ميكانيكي السيارات", "short": "ميكانيكي", "places": ["road", "garage", "home"], "cats": [["engine", "المحرك"], ["brakes", "الفرامل"], ["electric", "كهرباء السيارة"], ["battery", "البطارية"], ["gearbox", "علبة السرعة"], ["tyres", "العجلات والإطارات"], ["cooling", "التبريد والسخونة"], ["ac", "مكيف السيارة"], ["oil", "تسريب زيت"], ["suspension", "الأمورتيسور والمقود"], ["other", "أخرى"]], "syn": ["سيارة", "طونوبيل", "طوموبيل", "موطور", "محرك", "فران", "فرامل", "باطري", "بطارية", "روضة", "عجلة", "بنو", "ديباناج", "زيت", "فيتيس", "كليماتيزور السيارة"]}, {"id": "plumber", "name": "سبّاك (رصاص)", "short": "سبّاك", "places": ["home", "site"], "cats": [["leak", "تسرب الماء"], ["heater", "سخان الماء (الشوفو)"], ["clog", "انسداد القنوات"], ["install", "تركيب (مغسلة، مرحاض، دوش)"], ["pump", "المضخة والخزان"], ["other", "أخرى"]], "syn": ["الما", "الماء", "روبيني", "قادوس", "شوفو", "سخان", "تسرب", "مغسلة", "مرحاض", "دوش", "بومبة", "مضخة"]}, {"id": "electrician", "name": "كهربائي", "short": "كهربائي", "places": ["home", "site"], "cats": [["outage", "انقطاع التيار"], ["install", "تركيب كهرباء جديدة"], ["meter", "العدّاد والقاطع (الديسجونكتور)"], ["lighting", "الإنارة والمقابس"], ["shortcircuit", "تماس كهربائي"], ["other", "أخرى"]], "syn": ["الضو", "الضوء", "تريسيتي", "كهرباء", "كونطور", "عداد", "بريز", "ديسجونكتور", "قاطع", "لامبة", "تماس"]}, {"id": "carpenter", "name": "نجار", "short": "نجار", "places": ["home", "site", "garage"], "cats": [["doors", "الأبواب"], ["kitchen", "مطبخ وخزانات"], ["furniture", "أثاث"], ["repair", "إصلاح وصيانة"], ["other", "أخرى"]], "syn": ["خشب", "نجارة", "باب خشب", "مطبخ", "بلاكار", "خزانة", "أثاث"]}, {"id": "painter", "name": "صبّاغ", "short": "صبّاغ", "places": ["home", "site"], "cats": [["interior", "صباغة داخلية"], ["exterior", "صباغة الواجهة"], ["waterproof", "العزل ضد الرطوبة (الإيطانشيتي)"], ["decor", "ديكور وجبص"], ["other", "أخرى"]], "syn": ["صباغة", "صبغة", "دهان", "جبص", "رطوبة", "ايطانشيتي", "ديكور"]}, {"id": "mason", "name": "بنّاء", "short": "بنّاء", "places": ["home", "site"], "cats": [["build", "بناء"], ["renovation", "ترميم وإصلاح"], ["plaster", "التلبيس"], ["roof", "السطح والتسربات"], ["other", "أخرى"]], "syn": ["بني", "بناء", "ياجور", "سيما", "تلبيس", "سطح", "ترميم"]}, {"id": "welder", "name": "حدّاد", "short": "حدّاد", "places": ["home", "site", "garage"], "cats": [["doors", "أبواب حديدية"], ["windows", "شبابيك وحماية"], ["railing", "درابزين"], ["repair", "لحام وإصلاح"], ["other", "أخرى"]], "syn": ["حديد", "سودور", "لحام", "شرجم", "حماية", "درابزين", "باب حديد"]}, {"id": "tiler", "name": "زلايجي", "short": "زلايجي", "places": ["home", "site"], "cats": [["floor", "الأرضية"], ["wall", "الجدران"], ["bathroom", "الحمام والمطبخ"], ["repair", "إصلاح زليج مكسور"], ["other", "أخرى"]], "syn": ["زليج", "كارو", "زلايجي", "حمام", "أرضية"]}, {"id": "aluminium", "name": "ألمنيوم", "short": "ألمنيوم", "places": ["home", "site", "garage"], "cats": [["windows", "نوافذ"], ["doors", "أبواب"], ["kitchen", "مطبخ ألمنيوم"], ["repair", "إصلاح وتعديل"], ["other", "أخرى"]], "syn": ["ألومينيوم", "ألمنيوم", "نوافذ", "سيلكون", "باب ألمنيوم"]}, {"id": "hvac", "name": "التبريد والتكييف", "short": "تكييف", "places": ["home", "site"], "cats": [["ac_install", "تركيب مكيف"], ["ac_repair", "إصلاح مكيف"], ["gas", "شحن الغاز"], ["fridge", "ثلاجة ومجمّد"], ["other", "أخرى"]], "syn": ["كليماتيزور", "مكيف", "تكييف", "غاز", "فريجيدير", "مجمد"]}, {"id": "appliances", "name": "الأجهزة المنزلية", "short": "أجهزة منزلية", "places": ["home", "garage"], "cats": [["washer", "آلة الغسيل"], ["fridge", "الثلاجة"], ["oven", "الفرن والطباخة"], ["tv", "التلفاز"], ["small", "أجهزة صغيرة"], ["other", "أخرى"]], "syn": ["ماشينة", "آلة الصابون", "آلة الغسيل", "ثلاجة", "فرن", "طباخة", "تلفزة", "تلفاز"]}, {"id": "locksmith", "name": "الأقفال والمفاتيح", "short": "أقفال", "places": ["home", "road"], "cats": [["lockout", "باب مغلق"], ["change", "تغيير القفل"], ["car_key", "مفتاح سيارة"], ["safe", "خزنة"], ["other", "أخرى"]], "syn": ["ساروت", "مفتاح", "قفل", "باب مسدود", "باب مغلق", "خزنة", "سرير"]}, {"id": "satellite", "name": "البارابول والشبكات", "short": "بارابول", "places": ["home", "site"], "cats": [["dish", "البارابول"], ["wifi", "الإنترنت والويفي"], ["cameras", "كاميرات المراقبة"], ["intercom", "الأنترفون"], ["other", "أخرى"]], "syn": ["بارابول", "انترنيت", "إنترنت", "ويفي", "wifi", "كاميرا", "أنترفون", "ريزو"]}, {"id": "cleaning", "name": "التنظيف المنزلي", "short": "تنظيف", "places": ["home", "site"], "cats": [["house", "تنظيف المنزل"], ["carpets", "غسل الزرابي والصالونات"], ["after_works", "تنظيف بعد الأشغال"], ["office", "تنظيف المكاتب والمحلات"], ["tanks", "تنظيف الخزانات"], ["other", "أخرى"]], "syn": ["تنظيف", "نظافة", "زرابي", "زربية", "صالون", "موكيت", "منظفة", "خدامة", "شطابة"]}, {"id": "gypsum", "name": "الجبس والديكور", "short": "جبّاص", "places": ["home", "site"], "cats": [["ceiling", "سقف الجبس (البلاكو)"], ["decor", "ديكور ونقش الجبس"], ["walls", "حيطان وفواصل"], ["repair", "إصلاح وتشققات"], ["other", "أخرى"]], "syn": ["جبس", "جباص", "بلاكو", "placo", "ديكور", "سقف", "نقش"]}, {"id": "upholstery", "name": "الطابسي وتنجيد الصالونات", "short": "طابسي", "places": ["home", "site"], "cats": [["salon", "صالون مغربي (تنجيد)"], ["sofa", "كنبات وكراسي"], ["curtains", "الستائر (الريدو)"], ["mattress", "المطارح"], ["other", "أخرى"]], "syn": ["طابسي", "تنجيد", "صالون", "سدادر", "ريدو", "ستائر", "مطرح", "كنبة"]}, {"id": "tailor", "name": "الخياطة والتطريز", "short": "خيّاط", "places": ["site", "home"], "cats": [["traditional", "لباس تقليدي (جلابة، قفطان)"], ["alter", "تعديل وإصلاح الملابس"], ["embroidery", "الطرز"], ["custom", "تفصيل على المقاس"], ["other", "أخرى"]], "syn": ["خياط", "خياطة", "قفطان", "جلابة", "تكشيطة", "طرز", "تعديل", "سفيفة"]}, {"id": "movers", "name": "نقل الأثاث (الرحيل)", "short": "نقل الأثاث", "places": ["home", "site"], "cats": [["move", "رحيل منزل كامل"], ["few", "نقل بعض الأغراض"], ["assembly", "فك وتركيب الأثاث"], ["truck", "شاحنة مع سائق"], ["other", "أخرى"]], "syn": ["رحيل", "نقل", "ترحيل", "كاميو", "بيكوب", "حمالة", "أثاث"]}, {"id": "gardener", "name": "البستنة والحدائق", "short": "بستاني", "places": ["home", "site"], "cats": [["maintain", "صيانة الحديقة"], ["trees", "تقليم الأشجار"], ["lawn", "العشب (الكازو)"], ["irrigation", "السقي بالتنقيط"], ["other", "أخرى"]], "syn": ["جردة", "حديقة", "بستاني", "جرادني", "عشب", "شجر", "سقي"]}, {"id": "pest", "name": "مكافحة الحشرات", "short": "مكافحة الحشرات", "places": ["home", "site"], "cats": [["cockroach", "الصراصير (سراق الزيت)"], ["rodents", "الفئران"], ["termites", "الأرضة والبق"], ["disinfect", "التعقيم"], ["other", "أخرى"]], "syn": ["حشرات", "سراق الزيت", "فيران", "فار", "بق", "ناموس", "تعقيم", "رش"]}, {"id": "cameras", "name": "كاميرات المراقبة والإنذار", "short": "كاميرات المراقبة", "places": ["home", "site"], "cats": [["install", "تركيب الكاميرات"], ["alarm", "أجهزة الإنذار"], ["intercom", "الأنترفون والأبواب الذكية"], ["repair", "إصلاح وإعداد على الهاتف"], ["other", "أخرى"]], "syn": ["كاميرا", "كاميرات", "مراقبة", "انذار", "انترفون", "alarm", "camera"]}, {"id": "phones", "name": "إصلاح الهواتف واللوحات", "short": "إصلاح الهواتف", "places": ["site", "home"], "cats": [["screen", "تبديل الشاشة"], ["battery", "البطارية والشحن"], ["software", "البرامج والفورماتاج"], ["unlock", "الحساب والقفل"], ["water", "سقط في الماء"], ["other", "أخرى"]], "syn": ["تيليفون", "هاتف", "بورطابل", "شاشة", "ايفون", "سامسونغ", "تابليت", "فورماتاج"]}, {"id": "computers", "name": "إصلاح الحواسيب والطابعات", "short": "إصلاح الحواسيب", "places": ["site", "home", "remote"], "cats": [["repair", "إصلاح الحاسوب"], ["windows", "تثبيت الويندوز والبرامج"], ["virus", "الفيروسات والبطء"], ["printer", "الطابعات"], ["network", "الشبكة والويفي"], ["other", "أخرى"]], "syn": ["حاسوب", "بيسي", "pc", "لابتوب", "ويندوز", "طابعة", "ويفي", "wifi", "فيروس"]}, {"id": "webdev", "name": "تصميم المواقع والتطبيقات", "short": "مطوّر مواقع", "places": ["remote", "site"], "cats": [["website", "موقع إلكتروني"], ["store", "متجر إلكتروني"], ["app", "تطبيق هاتف"], ["fix", "تعديل أو إصلاح موقع"], ["other", "أخرى"]], "syn": ["موقع", "سيت", "site", "تطبيق", "application", "متجر", "ووردبريس", "برمجة"]}, {"id": "design", "name": "التصميم الجرافيكي", "short": "مصمّم جرافيك", "places": ["remote", "site"], "cats": [["logo", "شعار وهوية"], ["print", "مطبوعات (بطاقات، ملصقات)"], ["social", "تصاميم السوشل ميديا"], ["video_ad", "فيديو إعلاني قصير"], ["other", "أخرى"]], "syn": ["تصميم", "ديزاين", "design", "لوغو", "logo", "شعار", "بطاقة", "فلاير", "ملصق"]}, {"id": "marketing", "name": "التسويق الرقمي وإدارة الصفحات", "short": "تسويق رقمي", "places": ["remote"], "cats": [["pages", "إدارة صفحات فايسبوك وإنستغرام"], ["ads", "إعلانات ممولة (سبونسور)"], ["content", "كتابة المحتوى"], ["google", "الظهور في غوغل والخرائط"], ["other", "أخرى"]], "syn": ["سبونسور", "sponsor", "اعلان", "إعلان", "فايسبوك", "انستغرام", "تيكتوك", "تسويق", "ماركتينغ"]}, {"id": "photo", "name": "التصوير والمونتاج", "short": "مصوّر", "places": ["site", "home", "remote"], "cats": [["events", "تصوير الحفلات والأعراس"], ["product", "تصوير المنتجات"], ["drone", "تصوير جوي (درون)"], ["editing", "مونتاج الفيديو"], ["other", "أخرى"]], "syn": ["تصوير", "مصور", "فوطوغراف", "عرس", "فيديو", "مونتاج", "درون"]}, {"id": "eservices", "name": "الخدمات الإدارية الرقمية", "short": "خدمات إدارية رقمية", "places": ["remote", "site"], "cats": [["forms", "ملء الطلبات والاستمارات الإلكترونية"], ["appointments", "حجز المواعيد عبر الإنترنت"], ["cv", "السيرة الذاتية والرسائل"], ["typing", "الكتابة والطباعة والترجمة"], ["other", "أخرى"]], "syn": ["سيبير", "استمارة", "موعد", "رونديفو", "cv", "سيرة", "طباعة", "ترجمة", "تسجيل"]}], "places": [["road", "على الطريق"], ["garage", "في محل الحرفي"], ["home", "في المنزل"], ["site", "في محل أو ورش"], ["remote", "عن بُعد (أونلاين)"]], "partnerCats": [["parts", "قطع غيار السيارات"], ["tyres", "الإطارات"], ["oil", "الزيوت"], ["tow", "الديباناج"], ["insurance", "التأمين"], ["building", "مواد البناء"], ["plumbel", "مواد السباكة والكهرباء"], ["appliance", "قطع غيار الأجهزة"], ["paint", "الصباغة والديكور"]], "groups": [{"id": "car", "name": "السيارة والطوارئ", "desc": "أعطاب السيارة، الأبواب المغلقة والمفاتيح", "trades": ["mechanic", "locksmith"]}, {"id": "water", "name": "الماء والكهرباء والتبريد", "desc": "تسربات، انقطاع التيار، السخانات والمكيفات", "trades": ["plumber", "electrician", "hvac"]}, {"id": "devices", "name": "الأجهزة والشبكات", "desc": "آلة الغسيل، الثلاجة، البارابول والإنترنت", "trades": ["appliances", "satellite"]}, {"id": "build", "name": "البناء والتشطيب", "desc": "البناء، الزليج، الصباغة والعزل", "trades": ["mason", "tiler", "painter"]}, {"id": "wood", "name": "النجارة والحدادة والألمنيوم", "desc": "الأبواب، النوافذ، المطابخ والأثاث", "trades": ["carpenter", "welder", "aluminium"]}, {"id": "homecare", "name": "المنزل والخدمات", "desc": "التنظيف، الرحيل، الحديقة ومكافحة الحشرات", "trades": ["cleaning", "movers", "gardener", "pest"]}, {"id": "decor", "name": "الديكور والخياطة", "desc": "الجبس، الطابسي، الستائر والخياطة التقليدية", "trades": ["gypsum", "upholstery", "tailor"]}, {"id": "tech", "name": "الإصلاح التقني", "desc": "الهواتف، الحواسيب، الطابعات وكاميرات المراقبة", "trades": ["phones", "computers", "cameras"]}, {"id": "digital", "name": "الخدمات الرقمية", "desc": "المواقع، التصميم، التسويق، التصوير والخدمات الإدارية", "trades": ["webdev", "design", "marketing", "photo", "eservices"]}], "popular": [["plumber", "leak"], ["electrician", "outage"], ["mechanic", "battery"], ["mechanic", "tyres"], ["locksmith", "lockout"], ["hvac", "ac_repair"], ["appliances", "washer"], ["painter", "waterproof"], ["cleaning", "carpets"], ["phones", "screen"], ["design", "logo"]]};
 const REGIONS = DATA.regions;                       // [{id,name,cities:[[id,name]]}]
 const REGION = Object.fromEntries(REGIONS.map(r => [r.id, r]));
 const CITY = {};                                     // id -> {id,name,region}
@@ -803,7 +841,22 @@ const I = {
   hvac: sv('<path d="M12 2v20M4.9 7l14.2 10M19.1 7 4.9 17"/>'),
   appliances: sv('<path d="M5 3h14v18H5zM5 7h14"/><circle cx="12" cy="14" r="4"/>'),
   locksmith: sv('<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3"/>'),
-  satellite: sv('<path d="M4 10a10 10 0 0 0 10 10L4 10zM9 15l6-6M15 5a4 4 0 0 1 4 4"/>')
+  satellite: sv('<path d="M4 10a10 10 0 0 0 10 10L4 10zM9 15l6-6M15 5a4 4 0 0 1 4 4"/>'),
+  cleaning: sv('<path d="M14 3 9.5 11"/><path d="M6 11h8l1 3H5z"/><path d="M5 14l-1 7M9 14v7M12 14l1 7M15 14l2 7"/><path d="M18 4l.6 1.4L20 6l-1.4.6L18 8l-.6-1.4L16 6l1.4-.6z"/>'),
+  gypsum: sv('<path d="M3 5h18"/><path d="M5 5v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V5"/><path d="M8 10v2M16 10v2"/><path d="M4 21l6-6 3 3-6 6"/><path d="M13 18l5-5"/>'),
+  upholstery: sv('<path d="M4 12V9a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/><path d="M2 12a2 2 0 0 1 4 0v2h12v-2a2 2 0 0 1 4 0v5H2z"/><path d="M5 17v3M19 17v3"/>'),
+  tailor: sv('<circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.1 8.1 20 20M8.1 15.9 20 4"/>'),
+  movers: sv('<path d="M2 6h11v10H2z"/><path d="M13 9h4l4 4v3h-8"/><circle cx="6" cy="18" r="2"/><circle cx="17" cy="18" r="2"/>'),
+  gardener: sv('<path d="M12 22V11"/><path d="M12 11c0-4 3-7 8-7 0 4-3 7-8 7z"/><path d="M12 14c0-3-2-5-6-5 0 3 2 5 6 5z"/><path d="M7 22h10"/>'),
+  pest: sv('<ellipse cx="12" cy="14" rx="4" ry="6"/><path d="M12 8V4M9 5l1 3M15 5l-1 3"/><path d="M8 12H4M8 16l-4 2M16 12h4M16 16l4 2"/>'),
+  cameras: sv('<path d="M3 7l12-3 2 6-12 3z"/><path d="M9 12.5V17H5"/><path d="M17 8l3 1-1 4-3-1"/><circle cx="8" cy="8.6" r="1"/>'),
+  phones: sv('<rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/><path d="M9.5 9.5l2 2 3-3"/>'),
+  computers: sv('<rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M2 20h20"/><path d="M8 16l-1 4M16 16l1 4"/>'),
+  webdev: sv('<rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/><path d="M9 12l-2 2 2 2M15 12l2 2-2 2M13 11l-2 6"/>'),
+  design: sv('<path d="M12 2a10 10 0 1 0 0 20c1.1 0 2-.9 2-2 0-.5-.2-1-.5-1.3-.3-.4-.5-.8-.5-1.2 0-1.1.9-2 2-2h2.3A4.7 4.7 0 0 0 22 10.8C22 5.9 17.5 2 12 2z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15.5" cy="7.5" r="1.2"/>'),
+  marketing: sv('<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 6-7"/><path d="M15 7h5v5"/>'),
+  photo: sv('<path d="M3 8h4l2-3h6l2 3h4v12H3z"/><circle cx="12" cy="13" r="4"/><path d="M17.5 10.5h.01"/>'),
+  eservices: sv('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8M8 17h5"/><path d="M15.5 17.5l1.5 1.5 3-3"/>')
 };
 
 // ---------------- أدوات DOM ----------------
@@ -1141,6 +1194,7 @@ function welcomeScreen(){
         h("li",null, h("b",null, REGIONS.length), " جهة"),
         h("li",null, h("b",null, Object.keys(CITY).length), " عمالة وإقليم"))),
     h("div",{class:"trade-strip","aria-hidden":"true"}, TRADES.map(t => h("span",{class:"ts"}, ic(t.id), t.short))),
+    howItWorks(),
     h("div",{class:"stack"},
       h("button",{class:"role",type:"button",onclick:()=>pick("customer")}, h("div",{class:"ic",svg:I.home}), h("div",null,h("strong",null,"أبحث عن حرفي"),h("span",null,"عندي مشكل في السيارة أو المنزل"))),
       h("button",{class:"role",type:"button",onclick:()=>pick("mechanic")}, h("div",{class:"ic",svg:I.logo}), h("div",null,h("strong",null,"أنا حرفي"),h("span",null,"أستقبل الطلبات وأرسل عروضي")))),
@@ -1318,7 +1372,8 @@ function profileForm(mode){
           b.set(doc(db,"users",uid), { role, name: n, phone: ph, city: c, region: rg, createdAt: now });
           b.set(doc(db,"phones",phoneKey(ph)), { uid, createdAt: now });   // حساب واحد لكل رقم
         }
-        if (role === "mechanic") b.set(doc(db,"mechanics",uid), { ...mechData, status:"pending", available:true, verified:false, ratingSum:0, ratingCount:0, jobsDone:0, lastReviewId:"", featuredUntil:0, createdAt: now });
+        const referredBy = role === "mechanic" ? await refUid() : "";
+        if (role === "mechanic") b.set(doc(db,"mechanics",uid), { ...mechData, referredBy, status:"pending", available:true, verified:false, ratingSum:0, ratingCount:0, jobsDone:0, lastReviewId:"", featuredUntil:0, createdAt: now });
         await b.commit();
         if (!hadProfile){ S.profile = { role, name: n, phone: ph, city: c, region: rg, createdAt: now }; clearSubs(); startSession(); }
         rerender();
@@ -1450,7 +1505,7 @@ function ticket(r, opts){
       opts.extra || null) : null);
 }
 const skeletons = n => Array.from({length:n||2}, () => h("div",{class:"skel"}));
-const empty = (text, action) => h("div",{class:"empty"}, h("span",null,text), action || null);
+const empty = (text, action) => h("div",{class:"empty"}, art("empty", "art-empty"), h("span",null,text), action || null);
 function contactBox(title, name, phone, extra){
   const phoneEl = h("span",{class:"phone"}, phone);
   const copyBtn = h("button",{class:"btn ghost sm",type:"button",onclick: async ()=>{
@@ -1537,6 +1592,7 @@ function customerHome(){
   return [
     h("div",{class:"hello"}, h("h1",null,"مرحباً " + S.profile.name.split(" ")[0]), h("p",{class:"muted"}, withIcon("pin", cityName(myCity)))),
     problemSearch(),
+    seasonBanner(),
     !isOpenCity(myCity) ? h("div",{class:"banner warn stack",style:"gap:8px"}, h("span",null,"لم نصل إلى " + cityName(myCity) + " بعد. يمكنك تسجيل اهتمامك، أو اختيار مدينة مفتوحة عند الطلب."),
       h("button",{class:"btn sm",type:"button",onclick:()=>openSheet({type:"waitlist", role:"customer", city: myCity})},"سجّل اهتمامك")) : null,
     doneToReview.length ? h("button",{class:"banner info row between",type:"button",style:"width:100%;border:0;cursor:pointer",onclick:()=>openSheet({type:"detail", id:doneToReview[0].id})},
@@ -1692,6 +1748,8 @@ function accountView(){
     h("button",{class:"btn ghost block",type:"button",onclick:()=>openSheet({type:"profile", id:S.user.uid})},"ملفي العام ومنشوراتي"),
     p.role === "mechanic" ? h("button",{class:"btn block",type:"button",onclick:()=>openSheet({type:"wallet"})}, isFree() ? "رصيدي" : "رصيدي وتجديد ملفي") : null,
     h("button",{class:"btn ghost block",type:"button",onclick:()=>openSheet({type:"pricing"})},"الأسعار"),
+    h("button",{class:"btn soft block",type:"button",onclick:()=>openSheet({type:"aff"})}, ic("coins", 18), "التسويق بالعمولة: اربح بدعوة الحرفيين"),
+    h("button",{class:"btn ghost block",type:"button",onclick:()=>openSheet({type:"promo"})}, p.role === "customer" ? "ادعُ حرفياً تعرفه" : "ادعُ الحرفيين: صور ومنشورات"),
     (p.role === "customer" || p.role === "mechanic") ? h("button",{class:"btn ghost block",type:"button",onclick:()=>openSheet({type:"profile"})}, p.role === "mechanic" ? "تعديل بياناتي وحرفي" : "تعديل بياناتي") : null,
     S.user.providerData.some(x => x.providerId === "password") ? h("button",{class:"btn ghost block",type:"button",onclick: async ()=>{
       try { await sendPasswordResetEmail(auth, S.user.email); toast("أرسلنا رابط تغيير كلمة السر إلى بريدك."); } catch(e){ toast(errText(e)); }
@@ -1759,7 +1817,7 @@ function dynSheet(title, refresh){
 function buildSheet(){
   const sh = S.sheet; if (!sh) return;
   if (sh.type === "new") sheetFrame("طلب " + TRADE[sh.trade].name, newRequestForm(sh.trade, sh.cat));
-  if (sh.type === "profile") sheetFrame("بياناتي", profileForm("edit"));
+  if (sh.type === "profile" && !sh.id) sheetFrame("بياناتي", profileForm("edit"));
   if (sh.type === "detail") { dynSheet("تفاصيل الطلب", refreshDetail); loadDetailExtras(sh.id); }
   if (sh.type === "wallet") dynSheet("رصيدي", refreshWallet);
   if (sh.type === "mech") { dynSheet("ملف الحرفي", refreshMechPage); loadMechPage(sh.id); }
@@ -1773,11 +1831,13 @@ function buildSheet(){
   if (sh.type === "chat") buildChat();
   if (sh.type === "compose") sheetFrame(sh.edit ? "تعديل المنشور" : "منشور جديد", composeForm(sh));
   if (sh.type === "post") buildPost();
-  if (sh.type === "profile") buildProfile();
+  if (sh.type === "profile" && sh.id) buildProfile();
   if (sh.type === "groups") dynSheet("المجموعات", refreshGroups);
   if (sh.type === "dm") buildDM();
   if (sh.type === "terms") sheetFrame("الشروط والخصوصية", termsPage());
   if (sh.type === "pricing") sheetFrame("الأسعار", pricingPage());
+  if (sh.type === "promo") sheetFrame("ادعُ الحرفيين", promoPage());
+  if (sh.type === "aff") buildAff();
   if (sh.type === "receipt") sheetFrame("وصل", receiptSheet(sh));
 }
 
@@ -2401,9 +2461,9 @@ function adminPanel(){
   const f = S.filters;
   const pend = (S.allTopups||[]).filter(t => t.status === "pending").length, rp = (S.reports||[]).filter(x => x.status === "open").length;
   const items = [["topups","الشحن" + (pend ? " (" + pend + ")" : "")],["fstats","المالية"],["reports","البلاغات" + (rp ? " (" + rp + ")" : "")],["partners","الشركاء"],
-    ["launch","المدن المفتوحة"],["admins","المشرفون الجهويون"],["waitlist","قائمة الانتظار"],["settings","الإعدادات"]];
+    ["launch","المدن المفتوحة"],["admins","المشرفون الجهويون"],["waitlist","قائمة الانتظار"],["aff","المسوّقون"],["settings","الإعدادات"]];
   const nav = h("div",{class:"chips"}, items.map(([k,l]) => h("button",{type:"button",class:"chip" + (f.fin === k ? " on" : ""),"aria-pressed":String(f.fin===k),onclick:()=>{ f.fin = k; rerender(); }}, l)));
-  const body = { topups: finTopups, fstats: finStats, reports: adminReports, partners: finPartners, launch: launchPanel, admins: adminsPanel, waitlist: waitlistPanel, settings: finSettings }[f.fin]();
+  const body = { topups: finTopups, fstats: finStats, reports: adminReports, partners: finPartners, launch: launchPanel, admins: adminsPanel, waitlist: waitlistPanel, aff: adminAff, settings: finSettings }[f.fin]();
   return [h("h2",null,"الإدارة"), nav, body];
 }
 function finTopups(){
@@ -2425,7 +2485,7 @@ function finTopups(){
   })];
 }
 async function approveTopup(t){
-  const uid = S.user.uid;
+  const uid = S.user.uid; let comm = null;
   try {
     await runTransaction(db, async tx => {
       const tRef = doc(db,"topups",t.id), wRef = doc(db,"wallets",t.mechanicId), lRef = doc(db,"ledger","topup_" + t.id);
@@ -2433,11 +2493,14 @@ async function approveTopup(t){
       if (!ts.exists() || ts.data().status !== "pending") throw { code: "failed-precondition" };
       const w = await tx.get(wRef);
       const amt = ts.data().amount, bal = (w.exists() ? (w.data().credits || 0) : 0) + amt, now = Date.now();
+      comm = await commissionPlan(tx, t, amt, now);
       tx.update(tRef, { status:"approved", reviewedAt: now });
       tx.set(wRef, { credits: bal, lastLedgerId: lRef.id });
       tx.set(lRef, { mechanicId: t.mechanicId, type:"topup", amount: amt, balanceAfter: bal, requestId: t.id, note: METHODS[t.method] + " · " + t.reference, createdBy: uid, createdAt: now });
+      if (comm) { tx.set(comm.ref, comm.data); tx.update(comm.affRef, comm.affUpd); }
     });
     afterTopup(t, "approved");
+    if (comm) notify(comm.affId, "comm_" + comm.id, "commission", "عمولة جديدة: " + comm.amount + " درهم", "حرفي سجّل برابطك شحن رصيده.", { refId: comm.id });
     toast("أُضيف " + t.amount + " درهم إلى رصيد الحرفي.");
   } catch(e){ toast(errText(e)); }
 }
@@ -3259,8 +3322,10 @@ async function ensureProfile(){
 }
 const myCity = () => cityId((S.myProfile && S.myProfile.city) || S.profile.city);
 const isFollowing = id => !!(S.myProfile && (S.myProfile.followingIds || []).includes(id));
-function avatar(name, role, size){
-  return h("span",{class:"av " + (role === "mechanic" ? "av-pro" : role === "customer" ? "av-cus" : "av-adm"), style: size ? "--av:" + size + "px" : null, "aria-hidden":"true"}, String(name || "؟").trim().charAt(0));
+function avatar(name, role, size, uid){
+  const el = h("span",{class:"av " + (role === "mechanic" ? "av-pro" : role === "customer" ? "av-cus" : "av-adm"), style: size ? "--av:" + size + "px" : null, "aria-hidden":"true"}, String(name || "؟").trim().charAt(0));
+  if (uid) { if (AV[uid]) applyAvatar(el, AV[uid]); else if (!(uid in AV)) loadAvatar(uid).then(src => applyAvatar(el, src)); }
+  return el;
 }
 const ROLE_SHORT = { mechanic: "حرفي", customer: "زبون", admin: "الإدارة", regionAdmin: "الإدارة" };
 
@@ -3325,7 +3390,7 @@ async function loadMoreFeed(btn){
 function composerCard(){
   const p = S.myProfile || S.profile, isPro = S.profile.role === "mechanic";
   return h("div",{class:"card composer-card"},
-    h("div",{class:"row",style:"flex-wrap:nowrap;gap:10px"}, avatar(p.name, S.profile.role, 42),
+    h("div",{class:"row",style:"flex-wrap:nowrap;gap:10px"}, avatar(p.name, S.profile.role, 42, S.user.uid),
       h("button",{class:"fake-input",type:"button",onclick:()=>openSheet({type:"compose", kind: isPro ? "work" : "question"})},
         isPro ? "شارك عملاً أنجزته أو نصيحة…" : "اسأل المعلمين أو شارك تجربتك…")),
     h("div",{class:"comp-acts"},
@@ -3370,7 +3435,7 @@ function postCard(p, full){
   const photos = full ? S.postPhotos[p.id] : null;
   return h("article",{class:"card post"},
     h("header",{class:"phead"},
-      h("button",{class:"pauthor",type:"button",onclick:()=>openSheet({type:"profile", id:p.authorId})}, avatar(p.authorName, p.authorRole, 42),
+      h("button",{class:"pauthor",type:"button",onclick:()=>openSheet({type:"profile", id:p.authorId})}, avatar(p.authorName, p.authorRole, 42, p.authorId),
         h("span",{class:"pa-txt"}, h("span",{class:"row",style:"gap:5px;flex-wrap:nowrap"}, h("b",{class:"ell"}, p.authorName), verifiedMark(m)),
           h("span",{class:"small muted"}, ROLE_SHORT[p.authorRole] + " · " + cityName(p.city) + " · " + ago(p.createdAt)))),
       h("button",{class:"icon-btn ghost-ic",type:"button","aria-label":"خيارات",svg:I.dots,onclick: e => postMenu(p, e.currentTarget)})),
@@ -3474,7 +3539,7 @@ function composeForm(sh){
       toast("نُشر منشورك."); closeSheet(); rerender();
     } catch(err){ msg.textContent = errText(err); send.disabled = false; send.textContent = "نشر"; }
   }},
-    h("div",{class:"row",style:"gap:10px;flex-wrap:nowrap"}, avatar(prof.name, role, 42), h("div",null, h("strong",null, prof.name), h("div",{class:"small muted"}, ROLE_SHORT[role]))),
+    h("div",{class:"row",style:"gap:10px;flex-wrap:nowrap"}, avatar(prof.name, role, 42, S.user.uid), h("div",null, h("strong",null, prof.name), h("div",{class:"small muted"}, ROLE_SHORT[role]))),
     kind ? h("div",{class:"field"}, h("span",{class:"lbl"},"نوع المنشور"), kind) : null,
     h("div",{class:"field"}, h("label",{for:"c-text"},"النص"), text),
     edit ? null : h("div",{class:"field"}, thumbs, h("div",null, addBtn, fileIn)),
@@ -3514,7 +3579,7 @@ function refreshPost(){
   sh.dyn.replaceChildren(postCard(p, true),
     h("section",{class:"sec"}, h("h3",null, p.kind === "question" ? "الأجوبة" : "التعليقات", h("span",{class:"count"}, p.commentCount || 0)),
       sh.comments === null ? skeletons(1) : sh.comments.length ? sh.comments.map(c => h("div",{class:"cmt"},
-        h("button",{class:"plain",type:"button",onclick:()=>openSheet({type:"profile", id:c.authorId})}, avatar(c.authorName, c.authorRole, 34)),
+        h("button",{class:"plain",type:"button",onclick:()=>openSheet({type:"profile", id:c.authorId})}, avatar(c.authorName, c.authorRole, 34, c.authorId)),
         h("div",{class:"cbody"},
           h("div",{class:"cbubble"}, h("button",{class:"plain cname",type:"button",onclick:()=>openSheet({type:"profile", id:c.authorId})}, c.authorName,
             c.authorRole === "mechanic" ? h("span",{class:"tag",style:"margin-inline-start:6px"},"حرفي") : null), h("p",null, maskContacts(c.text))),
@@ -3566,9 +3631,10 @@ function buildProfile(){
   refreshProfile();
 }
 function refreshProfile(){
-  const sh = S.sheet; if (!sh || sh.type !== "profile") return;
+  const sh = S.sheet; if (!sh || sh.type !== "profile" || !sh.id || !sh.dyn) return;
   if (sh.prof === undefined) { sh.dyn.replaceChildren(h("div",{class:"skel",style:"height:220px"})); return; }
   if (sh.prof === null) { sh.dyn.replaceChildren(empty("هذا الملف غير متاح.")); return; }
+  loadCover(sh, sh.prof);
   const pr = sh.prof, mine = sh.id === S.user.uid, m = pr.role === "mechanic" ? S.mechs[sh.id] : null, following = isFollowing(sh.id);
   const tabsList = [["posts","المنشورات"], ["about","حول"], ...(pr.role === "mechanic" ? [["reviews","التقييمات"]] : [])];
   let body;
@@ -3586,8 +3652,11 @@ function refreshProfile(){
       h("span",{class:"muted small"}, fmtDate(r.createdAt))))) : empty("لا توجد تقييمات بعد."); }
   sh.dyn.replaceChildren(
     h("div",{class:"pcover"},
-      h("div",{class:"cover-band" + (pr.role === "mechanic" ? " pro" : "")}),
-      h("div",{class:"pc-main"}, avatar(pr.name, pr.role, 84),
+      h("div",{class:"cover-band" + (pr.role === "mechanic" ? " pro" : "") + (sh.cover ? " has-img" : ""), style: sh.cover ? 'background-image:url("' + sh.cover + '")' : null},
+        mine ? h("button",{class:"pic-btn cover-btn",type:"button","aria-label":"تغيير صورة الغلاف",onclick: e => picMenu("cover", e.currentTarget, !!pr.coverAt)}, ic("camera", 18), h("span",null,"الغلاف")) : null),
+      h("div",{class:"pc-main"},
+        h("div",{class:"av-wrap"}, avatar(pr.name, pr.role, 96, sh.id),
+          mine ? h("button",{class:"pic-btn av-btn",type:"button","aria-label":"تغيير الصورة الشخصية",onclick: e => picMenu("avatar", e.currentTarget, !!pr.photoAt)}, ic("camera", 18)) : null),
         h("h2",{class:"row",style:"gap:6px;justify-content:center"}, pr.name, verifiedMark(m)),
         h("div",{class:"small muted"}, ROLE_SHORT[pr.role] + " · " + cityName(pr.city) + (m && m.ratingCount ? " · ★ " + rating(m).toFixed(1) : "")),
         h("div",{class:"pc-stats"}, h("span",null, h("b",null, pr.followers || 0), " متابِع"), h("span",null, h("b",null, (pr.followingIds || []).length), " يتابع"),
@@ -3597,6 +3666,8 @@ function refreshProfile(){
             h("button",{class:"btn sm" + (following ? " ghost" : ""),type:"button",onclick: e => toggleFollow(sh.id, pr, e.currentTarget)}, following ? "تتابعه ✓" : "متابعة"),
             h("button",{class:"btn ghost sm",type:"button",onclick:()=>openDM(sh.id, pr.name)}, ic("chat", 16), "رسالة"),
             m && S.profile.role === "customer" ? h("button",{class:"btn soft sm",type:"button",onclick:()=>openSheet({type:"new", trade: mTrades(m)[0]})},"اطلب خدمة") : null),
+        mine && !pr.photoAt ? h("p",{class:"small muted"},"أضف صورتك وصورة غلاف لمحلك أو عملك: الزبائن يثقون أكثر في ملف بصورة.") : null,
+        adminPicTools(sh.id, pr),
         !mine ? h("button",{class:"link small",type:"button",onclick:()=>openSheet({type:"report", targetType:"profile", targetId:sh.id, region: pr.region})},"إبلاغ عن هذا الحساب") : null)),
     tabs("الملف", tabsList.map(([k, l]) => [k, l]), sh.ptab, k => { sh.ptab = k; refreshProfile(); }),
     ...[].concat(body));
@@ -3659,7 +3730,7 @@ function inboxView(){
     list === undefined || list === null ? skeletons(3) : list.length ? h("div",{class:"card",style:"gap:0;padding:4px 0"}, list.map(c => {
       const other = c.members.find(x => x !== me) || me, n = (c.unread || {})[me] || 0, name = (c.names || {})[other] || "مستخدم";
       return h("button",{type:"button",class:"nrow" + (n ? " unread" : ""),onclick:()=>openDM(other, name)},
-        avatar(name, "", 44),
+        avatar(name, "", 44, other),
         h("span",{class:"nt"}, h("b",null, name), h("span",{class:"small muted clamp1"}, (c.lastFrom === me ? "أنت: " : "") + maskContacts(c.lastText)), h("span",{class:"small muted"}, ago(c.lastAt))),
         n ? h("span",{class:"badge-in"}, n) : null);
     })) : empty("لا توجد رسائل بعد. افتح ملف أي حرفي أو مستخدم واضغط «رسالة»."));
@@ -3730,7 +3801,7 @@ function rightRail(){
   return h("aside",{class:"rail","aria-label":"اقتراحات"},
     h("section",{class:"card"}, h("h3",null,"حرفيون في " + cityName(c)),
       pros.length ? pros.map(m => h("div",{class:"grow"},
-        h("button",{class:"plain grow-main",type:"button",onclick:()=>openSheet({type:"profile", id:m.id})}, avatar(m.name, "mechanic", 38),
+        h("button",{class:"plain grow-main",type:"button",onclick:()=>openSheet({type:"profile", id:m.id})}, avatar(m.name, "mechanic", 38, m.id),
           h("span",null, h("b",null, m.name), h("span",{class:"small muted",style:"display:block"}, mTrades(m).map(t => TRADE[t].short).join("، ") + (m.ratingCount ? " · ★ " + rating(m).toFixed(1) : "")))))) :
         h("p",{class:"small muted"},"لا يوجد حرفيون بعد في مدينتك.")),
     sug.length ? h("section",{class:"card"}, h("h3",null,"مجموعات مقترحة"),
@@ -4065,6 +4136,554 @@ function offAppCard(r){
   return box;
 }
 
+// ---------------- صور ومنشورات دعوة الحرفيين ----------------
+I.copy = sv('<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/>');
+I.megaphone = sv('<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/>');
+const PROMO_LINK_KEY = "promoLink";
+function promoLink(){ try { return localStorage.getItem(PROMO_LINK_KEY) || "is.gd/maalemqarib"; } catch(e){ return "is.gd/maalemqarib"; } }
+function setPromoLink(v){ try { localStorage.setItem(PROMO_LINK_KEY, v); } catch(e){} }
+
+function rr(ctx, x, y, w, hh, r){ ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + hh, r); ctx.arcTo(x + w, y + hh, x, y + hh, r); ctx.arcTo(x, y + hh, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function svgImg(markup, color, size, width){
+  const s = markup.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="' + size + '" height="' + size + '" ')
+    .replace(/currentColor/g, color).replace(/stroke-width="2"/, 'stroke-width="' + (width || 1.6) + '"');
+  return new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(s); });
+}
+const PROMO_LOGO = '<svg viewBox="0 0 512 512"><rect width="512" height="512" rx="112" fill="#C2601C"/><g transform="translate(64 56) scale(8)"><path fill="#fff" d="M24 46s-16-13.6-16-26a16 16 0 0 1 32 0c0 12.4-16 26-16 26z"/><g transform="translate(13.2 9.2) scale(.9)" fill="none" stroke="#C2601C" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></g></g></svg>';
+function wrapLines(ctx, text, maxW){
+  const words = text.split(" "), lines = []; let cur = "";
+  words.forEach(w => { const t = cur ? cur + " " + w : w; if (ctx.measureText(t).width > maxW && cur) { lines.push(cur); cur = w; } else cur = t; });
+  if (cur) lines.push(cur); return lines;
+}
+async function drawPoster(canvas, trade, link){
+  const W = 1080, ctx = canvas.getContext("2d");
+  canvas.width = W; canvas.height = W;
+  const D = '"Alexandria","IBM Plex Sans Arabic",Tahoma,sans-serif', B = '"IBM Plex Sans Arabic",Tahoma,sans-serif';
+  try { await Promise.all(["700 96px Alexandria", "800 76px Alexandria", "400 34px 'IBM Plex Sans Arabic'", "600 24px 'IBM Plex Sans Arabic'"].map(f => document.fonts.load(f))); } catch(e){}
+  ctx.fillStyle = "#17222A"; ctx.fillRect(0, 0, W, W);
+  const g = ctx.createRadialGradient(200, 320, 0, 200, 320, 620); g.addColorStop(0, "rgba(194,96,28,.30)"); g.addColorStop(1, "rgba(194,96,28,0)");
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, W);
+  ctx.direction = "rtl"; ctx.textAlign = "right"; ctx.textBaseline = "alphabetic";
+  // الرأس
+  const logoIm = await svgImg(PROMO_LOGO, "#fff", 64);
+  if (logoIm) ctx.drawImage(logoIm, W - 76 - 64, 80, 64, 64);
+  ctx.fillStyle = "#fff"; ctx.font = "700 44px " + D; ctx.fillText(APP_NAME, W - 76 - 84, 118);
+  ctx.fillStyle = "#B9C6CC"; ctx.font = "400 24px " + B; ctx.fillText("الحرفي القريب منك، فكل المغرب", W - 76 - 84, 152);
+  if (trade && TRADE[trade]) {
+    const t = TRADE[trade], cx = 834, cy = 520;
+    [[206, "rgba(194,96,28,.10)"], [188, "rgba(194,96,28,.22)"], [170, "#C2601C"]].forEach(([r, c]) => { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fillStyle = c; ctx.fill(); });
+    const im = await svgImg(I[trade] || I.logo, "#fff", 210, 1.5);
+    if (im) ctx.drawImage(im, cx - 105, cy - 105, 210, 210);
+    const R = 606, maxW = 520;
+    ctx.fillStyle = "#F3B58A"; ctx.font = "700 40px " + D; ctx.fillText("واش نتا", R, 380);
+    let fs = 96; ctx.font = "800 " + fs + "px " + D;
+    let nl = wrapLines(ctx, t.short + "؟", maxW);
+    if (nl.length > 1 || ctx.measureText(nl[0]).width > maxW) { fs = 70; ctx.font = "800 " + fs + "px " + D; nl = wrapLines(ctx, t.short + "؟", maxW); }
+    ctx.fillStyle = "#fff"; let y = 380 + fs * 1.15;
+    nl.forEach(l => { ctx.fillText(l, R, y); y += fs * 1.15; });
+    ctx.fillStyle = "#D7E0E3"; ctx.font = "400 34px " + B; y += 14;
+    ["الزبناء فمدينتك كيقلبو عليك.", "شوف الطلب والصور، وعطي الثمن ديالك."].forEach(s => wrapLines(ctx, s, maxW).forEach(l => { ctx.fillText(l, R, y); y += 54; }));
+  } else {
+    ctx.font = "800 76px " + D; ctx.fillStyle = "#fff";
+    const a = "كل الحرف، "; ctx.fillText(a, W - 76, 285);
+    const aw = ctx.measureText(a).width; ctx.fillStyle = "#F08A45"; ctx.fillText("فمدينتك", W - 76 - aw, 285);
+    const FEAT = ["mechanic","plumber","electrician","carpenter","painter","mason","tiler","gypsum","aluminium","hvac","cleaning","upholstery","tailor","phones","computers","cameras","webdev","design","marketing"].filter(id => TRADE[id]);
+    const shown = FEAT.slice(0, 19).map(id => TRADE[id]), rest = TRADES.length - shown.length;
+    const cols = 5, gap = 16, cw = (W - 152 - gap * (cols - 1)) / cols, ch = 118, top = 330;
+    const icons = await Promise.all(shown.map(t => svgImg(I[t.id] || I.logo, "#F3B58A", 50, 1.7)));
+    for (let i = 0; i <= shown.length; i++) {
+      const col = i % cols, row = Math.floor(i / cols), x = W - 76 - (col + 1) * cw - col * gap, yy = top + row * (ch + gap);
+      if (i === shown.length) {
+        if (rest <= 0) break;
+        rr(ctx, x, yy, cw, ch, 20); ctx.fillStyle = "#C2601C"; ctx.fill();
+        ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.font = "800 34px " + D; ctx.fillText("+" + rest, x + cw / 2, yy + 56);
+        ctx.font = "600 19px " + B; ctx.fillText("حرفة أخرى", x + cw / 2, yy + 90); ctx.textAlign = "right"; break;
+      }
+      rr(ctx, x, yy, cw, ch, 20); ctx.fillStyle = "rgba(255,255,255,.06)"; ctx.fill(); ctx.strokeStyle = "rgba(255,255,255,.14)"; ctx.lineWidth = 2; ctx.stroke();
+      if (icons[i]) ctx.drawImage(icons[i], x + cw / 2 - 25, yy + 16, 50, 50);
+      ctx.fillStyle = "#E5EBED"; ctx.font = "500 19px " + B; ctx.textAlign = "center";
+      const ls = wrapLines(ctx, shown[i].short, cw - 12); ls.slice(0, 2).forEach((l, k) => ctx.fillText(l, x + cw / 2, yy + 92 + k * 22 - (ls.length > 1 ? 10 : 0)));
+      ctx.textAlign = "right";
+    }
+  }
+  // زر التسجيل
+  rr(ctx, 76, 900, W - 152, 110, 28); ctx.fillStyle = "#fff"; ctx.fill();
+  ctx.fillStyle = "#17222A"; ctx.font = "700 38px " + D; ctx.fillText("سجّل مجاناً من هنا", W - 116, 968);
+  const tw = ctx.measureText("سجّل مجاناً من هنا").width;
+  ctx.direction = "ltr"; ctx.textAlign = "left"; ctx.fillStyle = "#C2601C";
+  let lf = 44; ctx.font = "700 " + lf + "px " + D;
+  while (ctx.measureText(link).width > W - 232 - tw - 40 && lf > 20) { lf -= 2; ctx.font = "700 " + lf + "px " + D; }
+  ctx.fillText(link, 116, 970);
+  ctx.direction = "rtl"; ctx.textAlign = "right";
+}
+const DIGITAL_IDS = GROUPS.filter(g => g.id === "tech" || g.id === "digital").flatMap(g => g.trades);
+function promoTexts(trade, link){
+  const t = trade && TRADE[trade];
+  const who = t ? "🔧 واش نتا " + t.short + "؟" : "🔧 واش نتا معلّم؟ ميكانيسيان، بلومبي، تريسيان، صباغ، نجار، لحام…";
+  return [
+    ["بالدارجة، قصير", who + "\n\nبغيتي تجيك الخدمة حتى لعندك بلا ما تقلب عليها؟ 👇\n\n📱 «" + APP_NAME + "»: تطبيق مغربي كيربط الناس اللي محتاجين حرفي مع المعلمين القريبين منهم فالمدينة ديالهم.\n\n✅ كتوصلك طلبات ديال الزبناء فالمدينة ديالك\n✅ كتشوف المشكل والصور قبل ما تتنقل\n✅ كتعطي الثمن ديالك والزبون كيختار\n✅ التقييمات كتبني سمعتك وكتجيب ليك زبناء جداد\n\n🎁 التسجيل مجاني دابا\n\n👈 سجل من هنا: " + link + "\n\nشارك المنشور مع شي معلّم كتعرفو 🤝"],
+    ["بالدارجة، مفصّل", "📢 للمعلمين والحرفيين فالمغرب 🇲🇦\n\nكتقلب على خدمة؟ ولا الخدمة كتجيك غير من المعارف؟\n\nدابا كاين «" + APP_NAME + "» 🔧: تطبيق كيوصلك مباشرة بالزبناء اللي محتاجين حرفتك فالمدينة ديالك.\n\n👷 حرف يدوية: " + TRADES.filter(x => !DIGITAL_IDS.includes(x.id)).map(x => x.short).join("، ") + ".\n💻 خدمات تقنية ورقمية: " + TRADES.filter(x => DIGITAL_IDS.includes(x.id)).map(x => x.short).join("، ") + ".\n\n⚙️ كيفاش كيخدم؟\n1️⃣ الزبون كيكتب المشكل ديالو وكيحط الصور\n2️⃣ نتا كتوصلك الطلبات فالحي والمدينة ديالك\n3️⃣ كتشوف التفاصيل وكتقترح الثمن ديالك\n4️⃣ الزبون كيختارك وكتتواصلو مباشرة\n5️⃣ بعد الخدمة كيعطيك تقييم كيقوي البروفايل ديالك\n\n💡 علاش «" + APP_NAME + "»؟\n• ماكاين حتى وسيط ياخد نسبة من الخدمة ديالك\n• كتختار الطلبات اللي كتناسبك\n• بروفايل احترافي فيه حرفتك وتقييماتك\n• خدام من التيليفون بلا ما تحمّل حتى تطبيق\n\n🎁 التسجيل مجاني فهاد المرحلة\n\n📲 كيفاش تسجل:\nحل الرابط ← اختار «حرفي» ← دخل حرفتك ومدينتك ← تسنى التفعيل\n\n👈 " + link + "\n\n🤝 إلا كتعرف شي معلّم، تاگيه فالتعليقات ولا صيفط ليه المنشور"],
+    ["بالعربية الفصحى", "🔧 إلى كل الحرفيين والمعلمين في المغرب\n\nهل تبحث عن زبائن جدد في مدينتك؟\n\n«" + APP_NAME + "» منصة مغربية تربط أصحاب الحاجة بالحرفيين القريبين منهم: " + TRADES.slice(0, 6).map(x => x.short).join("، ") + "، وغيرهم من الحرفيين، وأيضاً مصلّحي الهواتف والحواسيب ومطوّري المواقع والمصممين والمسوّقين الرقميين.\n\n✅ تصلك طلبات الزبائن في مدينتك\n✅ ترى وصف المشكلة وصورها قبل التنقل\n✅ تقترح ثمنك والزبون يختار\n✅ التقييمات تبني سمعتك وتجلب لك زبائن جدداً\n✅ تعمل من الهاتف مباشرة بدون تحميل أي تطبيق\n\n🎁 التسجيل مجاني في هذه المرحلة\n\n📲 للتسجيل: افتح الرابط، واختر «حرفي»، وأدخل حرفتك ومدينتك.\n\n👈 " + link + "\n\nشارك المنشور مع من تعرف من الحرفيين 🤝"]
+  ];
+}
+function promoPage(){
+  let trade = "", link = promoLink();
+  const canvas = h("canvas",{class:"promo-canvas",width:1080,height:1080,"aria-label":"صورة الدعوة"});
+  const texts = h("div",{class:"stack",style:"gap:12px"});
+  const fileName = () => "maalem-" + (trade || "all") + ".png";
+  const blob = () => new Promise(r => canvas.toBlob(r, "image/png"));
+  const redraw = async () => { await drawPoster(canvas, trade, link); renderTexts(); };
+  const copy = async (txt, msg) => { try { await navigator.clipboard.writeText(txt); toast(msg || "نُسخ."); } catch(e){ toast("لم يُنسخ. اضغط مطولاً على النص وانسخه."); } };
+  function renderTexts(){
+    texts.replaceChildren(...promoTexts(trade, link).map(([label, txt]) => h("details",{class:"card promo-text"},
+      h("summary",null, h("b",null,label), h("span",{class:"small muted"}," · اضغط للعرض")),
+      h("p",{class:"promo-body"}, txt),
+      h("div",{class:"row",style:"gap:8px;flex-wrap:wrap"},
+        h("button",{class:"btn sm",type:"button",onclick:()=>copy(txt, "نُسخ المنشور. الصقه في فايسبوك.")}, ic("copy", 16), "نسخ النص"),
+        h("a",{class:"btn sm ghost",href:waLinkText(txt),target:"_blank",rel:"noopener"},"واتساب")))));
+  }
+  async function shareImg(){
+    const b = await blob(); if (!b) return;
+    const f = new File([b], fileName(), {type:"image/png"});
+    const txt = promoTexts(trade, link)[0][1];
+    try {
+      if (navigator.canShare && navigator.canShare({ files:[f] })) { await navigator.share({ files:[f], text: txt }); return; }
+    } catch(e){ if (e && e.name === "AbortError") return; }
+    download(b); toast("حُمّلت الصورة. انسخ النص وانشرهما معاً.");
+  }
+  function download(b){
+    const go = bb => { const u = URL.createObjectURL(bb); const a = h("a",{href:u,download:fileName()}); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); };
+    if (b) go(b); else blob().then(x => x && go(x));
+  }
+  const sel = h("select",{id:"promo-trade",onchange: e => { trade = e.target.value; redraw(); }},
+    h("option",{value:""},"كل الحرف (صورة عامة)"), TRADES.map(t => h("option",{value:t.id}, t.name)));
+  const linkIn = h("input",{id:"promo-link",dir:"ltr",value:link,autocomplete:"off",onchange: e => { link = e.target.value.trim() || "is.gd/maalemqarib"; setPromoLink(link); redraw(); }});
+  setTimeout(redraw, 0);
+  return h("div",{class:"stack",style:"gap:16px"},
+    h("p",{class:"muted"},"اختر الحرفة فتتغيّر الصورة والمنشور. شارك الصورة مباشرة في فايسبوك أو واتساب، أو حمّلها، ثم انسخ النص."),
+    h("div",{class:"card stack",style:"gap:12px"},
+      h("label",{class:"field"}, h("span",null,"الحرفة"), sel),
+      h("label",{class:"field"}, h("span",null,"الرابط الذي يظهر في الصورة"), linkIn,
+        h("span",{class:"small muted"},"ضع رابطك القصير. إن تركته فارغاً يُستعمل is.gd/maalemqarib."))),
+    h("div",{class:"promo-frame"}, canvas),
+    h("div",{class:"row",style:"gap:8px"},
+      h("button",{class:"btn",style:"flex:1",type:"button",onclick:shareImg}, ic("share", 18), "مشاركة الصورة"),
+      h("button",{class:"btn ghost",style:"flex:1",type:"button",onclick:()=>download()}, ic("download", 18), "تحميل")),
+    h("h3",null,"نص المنشور"),
+    texts);
+}
+
+// ---------------- الصورة الشخصية وصورة الغلاف (مثل فايسبوك) ----------------
+// تُخزَّن في Firestore كـ JPEG مضغوط: avatars/{uid} (صغيرة) و covers/{uid} (عريضة)
+const AV = {};      // uid -> dataURL أو null
+const AVP = {};     // uid -> Promise قيد التحميل
+function loadAvatar(uid){
+  if (!uid) return Promise.resolve(null);
+  if (uid in AV) return Promise.resolve(AV[uid]);
+  if (!AVP[uid]) AVP[uid] = getDoc(doc(db,"avatars",uid)).then(s => (AV[uid] = s.exists() ? s.data().data : null))
+    .catch(() => (AV[uid] = null)).finally(() => { delete AVP[uid]; });
+  return AVP[uid];
+}
+function applyAvatar(el, src){
+  if (!src) return;
+  el.style.backgroundImage = 'url("' + src + '")'; el.classList.add("av-img"); el.textContent = "";
+}
+async function cropJpeg(file, w, hh, maxLen){
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+    const target = w / hh, src = img.width / img.height;
+    let sw = img.width, shh = img.height, sx = 0, sy = 0;
+    if (src > target) { sw = img.height * target; sx = (img.width - sw) / 2; } else { shh = img.width / target; sy = (img.height - shh) / 2; }
+    for (const [scale, q] of [[1,.8],[1,.65],[.8,.6],[.65,.55],[.5,.5]]){
+      const c = document.createElement("canvas"); c.width = Math.round(w * scale); c.height = Math.round(hh * scale);
+      const ctx = c.getContext("2d"); ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+      ctx.drawImage(img, sx, sy, sw, shh, 0, 0, c.width, c.height);
+      const data = c.toDataURL("image/jpeg", q);
+      if (data.length < maxLen) return data;
+    }
+    throw new Error("too-big");
+  } finally { URL.revokeObjectURL(url); }
+}
+function pickImage(onFile){
+  const inp = h("input",{type:"file",accept:"image/*",style:"display:none",onchange: e => { const f = e.target.files && e.target.files[0]; inp.remove(); if (f) onFile(f); }});
+  document.body.append(inp); inp.click();
+}
+const PIC = {
+  avatar: { col: "avatars", field: "photoAt", w: 320, h: 320, max: 45000, ok: "تغيّرت صورتك.", del: "حُذفت صورتك." },
+  cover:  { col: "covers",  field: "coverAt", w: 1200, h: 450, max: 280000, ok: "تغيّرت صورة الغلاف.", del: "حُذفت صورة الغلاف." }
+};
+async function uploadPic(kind, file){
+  const k = PIC[kind], uid = S.user.uid, now = Date.now();
+  toast("جاري رفع الصورة…");
+  try {
+    const data = await cropJpeg(file, k.w, k.h, k.max);
+    await setDoc(doc(db, k.col, uid), { data, updatedAt: now });
+    await updateDoc(doc(db,"profiles",uid), { [k.field]: now, updatedAt: now });
+    if (kind === "avatar") AV[uid] = data;
+    const sh = S.sheet; if (sh && sh.type === "profile" && sh.id === uid && kind === "cover") sh.cover = data;
+    toast(k.ok); rerender(); if (S.sheet && S.sheet.refresh) S.sheet.refresh();
+  } catch(e){ toast(e && e.message === "too-big" ? "الصورة كبيرة جداً. جرّب صورة أخرى." : errText(e)); }
+}
+async function removePic(kind){
+  const k = PIC[kind], uid = S.user.uid, now = Date.now();
+  try {
+    await deleteDoc(doc(db, k.col, uid));
+    await updateDoc(doc(db,"profiles",uid), { [k.field]: 0, updatedAt: now });
+    if (kind === "avatar") AV[uid] = null;
+    const sh = S.sheet; if (sh && sh.type === "profile" && kind === "cover") sh.cover = null;
+    toast(k.del); rerender(); if (S.sheet && S.sheet.refresh) S.sheet.refresh();
+  } catch(e){ toast(errText(e)); }
+}
+function picMenu(kind, anchor, has){
+  const close = () => pop.remove();
+  const item = (label, fn, cls) => h("button",{type:"button",class:"menu-item " + (cls || ""),onclick:()=>{ close(); fn(); }}, label);
+  const pop = h("div",{class:"popmenu",role:"menu"},
+    item(kind === "avatar" ? "اختيار صورة شخصية" : "اختيار صورة غلاف", () => pickImage(f => uploadPic(kind, f))),
+    has ? item("حذف الصورة", () => removePic(kind), "danger-t") : null);
+  document.body.append(pop);
+  const r = anchor.getBoundingClientRect();
+  pop.style.top = (r.bottom + window.scrollY + 4) + "px"; pop.style.insetInlineEnd = Math.max(8, document.documentElement.clientWidth - r.right) + "px";
+  setTimeout(() => document.addEventListener("click", function off(e){ if (!pop.contains(e.target)) { close(); document.removeEventListener("click", off); } }), 0);
+}
+// صورة الغلاف لصفحة الملف: تُحمّل مرة واحدة لكل فتح
+function loadCover(sh, pr){
+  if (!pr.coverAt) { sh.cover = null; return; }
+  if (sh.coverAt === pr.coverAt) return;
+  sh.coverAt = pr.coverAt; sh.cover = undefined;
+  getDoc(doc(db,"covers",sh.id)).then(s => { sh.cover = s.exists() ? s.data().data : null; refreshProfile(); }).catch(() => { sh.cover = null; });
+}
+function adminPicTools(uid, pr){
+  if (S.profile.role !== "admin" || uid === S.user.uid || !(pr.photoAt || pr.coverAt)) return null;
+  const del = async (kind) => {
+    const k = PIC[kind];
+    try { await deleteDoc(doc(db, k.col, uid)); await updateDoc(doc(db,"profiles",uid), { [k.field]: 0 }); if (kind === "avatar") AV[uid] = null; toast("حُذفت الصورة."); refreshProfile(); }
+    catch(e){ toast(errText(e)); }
+  };
+  return h("div",{class:"row small",style:"justify-content:center;gap:10px"},
+    pr.photoAt ? h("button",{class:"link small danger-t",type:"button",onclick:()=>del("avatar")},"حذف صورته (إدارة)") : null,
+    pr.coverAt ? h("button",{class:"link small danger-t",type:"button",onclick:()=>del("cover")},"حذف الغلاف (إدارة)") : null);
+}
+
+// ---------------- التسويق بالعمولة ----------------
+// أي مستعمل يأخذ رابطاً خاصاً (?r=CODE). الحرفي الذي يسجّل به يُربط بالمسوّق (referredBy)،
+// وكل شحن يقبله المشرف لهذا الحرفي خلال مدة محددة يعطي المسوّق نسبة منه. السحب يدوي يؤكده المشرف.
+const AFF_DEFAULT = { on: true, rate: 20, months: 12, min: 100 };
+const affInt = v => { const s = String(v == null ? "" : v).replace(/\D/g, ""); return s === "" ? 0 : parseInt(s, 10); };
+const PAYOUT_ST = { pending: "قيد الدفع", paid: "دُفعت", rejected: "مرفوضة" };
+I.coins = sv('<circle cx="9" cy="9" r="6"/><path d="M15.5 9.3A6 6 0 1 1 9.3 15.5"/><path d="M9 6.5v5M7 8h3"/>');
+
+// التقاط رمز الإحالة من الرابط عند فتح التطبيق
+(function(){
+  try {
+    const r = new URLSearchParams(location.search).get("r");
+    if (r && /^[A-Za-z0-9]{6}$/.test(r)) {
+      const cur = ls.get("refCode", null);
+      if (!cur || Date.now() - cur.at > 60 * DAY) ls.set("refCode", { code: r.toUpperCase(), at: Date.now() });
+      history.replaceState(history.state, "", location.pathname + location.hash);
+    }
+  } catch(e){}
+})();
+async function refUid(){
+  const r = ls.get("refCode", null);
+  if (!r || !r.code || Date.now() - r.at > 60 * DAY) return "";
+  try { const s = await getDoc(doc(db,"refcodes",r.code)); const u = s.exists() ? s.data().uid : ""; return u && u !== S.user.uid ? u : ""; } catch(e){ return ""; }
+}
+async function loadAffSet(){
+  try { const s = await getDoc(doc(db,"settings","affiliate")); return { ...AFF_DEFAULT, ...(s.exists() ? s.data() : {}) }; } catch(e){ return { ...AFF_DEFAULT }; }
+}
+const affLink = code => location.origin + location.pathname + "?r=" + code;
+const affLinkShort = code => affLink(code).replace(/^https?:\/\//, "");
+function newCode(){ const A = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let c = ""; for (let i = 0; i < 6; i++) c += A[Math.floor(Math.random() * A.length)]; return c; }
+
+// ---------- صفحة المسوّق ----------
+let affUnsub = null;
+function buildAff(){
+  const sh = S.sheet;
+  sh.aff = undefined; sh.cfg = null; sh.comms = null; sh.pays = null; sh.refs = null;
+  dynSheet("التسويق بالعمولة", refreshAff);
+  loadAffSet().then(c => { sh.cfg = c; refreshAff(); });
+  if (affUnsub) { try { affUnsub(); } catch(e){} }
+  affUnsub = onSnapshot(doc(db,"affiliates",S.user.uid), s => {
+    const first = sh.aff === undefined || sh.aff === null;
+    sh.aff = s.exists() ? s.data() : null;
+    if (sh.aff && first) loadAffLists(sh);
+    refreshAff();
+  }, () => { sh.aff = null; refreshAff(); });
+  sh.onClose = () => { if (affUnsub) { try { affUnsub(); } catch(e){} affUnsub = null; } };
+}
+function loadAffLists(sh){
+  const me = S.user.uid;
+  getDocs(query(collection(db,"commissions"), where("affId","==",me), limit(100))).then(s => { sh.comms = rows(s).sort((a,b) => b.createdAt - a.createdAt); refreshAff(); }).catch(() => { sh.comms = []; refreshAff(); });
+  getDocs(query(collection(db,"payouts"), where("affId","==",me), limit(50))).then(s => { sh.pays = rows(s).sort((a,b) => b.createdAt - a.createdAt); refreshAff(); }).catch(() => { sh.pays = []; refreshAff(); });
+  getDocs(query(collection(db,"mechanics"), where("referredBy","==",me), where("status","==","approved"), limit(200))).then(s => { sh.refs = s.size; refreshAff(); }).catch(() => { sh.refs = 0; refreshAff(); });
+}
+async function createAffiliate(btn){
+  btn.disabled = true;
+  const me = S.user.uid, name = ((S.myProfile && S.myProfile.name) || S.profile.name || "").slice(0, 60);
+  for (let i = 0; i < 4; i++) {
+    const code = newCode();
+    try {
+      const ex = await getDoc(doc(db,"refcodes",code)); if (ex.exists()) continue;
+      const b = writeBatch(db);
+      b.set(doc(db,"affiliates",me), { code, name: name.length >= 2 ? name : "مسوّق", balance: 0, pendingOut: 0, paidOut: 0, earned: 0, lastPayoutId: "", createdAt: Date.now() });
+      b.set(doc(db,"refcodes",code), { uid: me });
+      await b.commit(); toast("رابطك جاهز. شاركه مع الحرفيين."); return;
+    } catch(e){ if (i === 3) toast(errText(e)); }
+  }
+  btn.disabled = false;
+}
+function affIntro(cfg){
+  return h("div",{class:"card stack",style:"gap:10px"},
+    h("h3",null,"اربح معنا بدعوة الحرفيين"),
+    h("ol",{class:"steps small"},
+      h("li",null,"تأخذ رابطاً خاصاً بك."),
+      h("li",null,"تشاركه مع الحرفيين في فايسبوك وواتساب ومع معارفك."),
+      h("li",null, h("span",null,"كل حرفي يسجّل برابطك ويشحن رصيده، تأخذ ", h("b",null, cfg.rate + "%"), " من كل شحن خلال ", h("b",null, cfg.months + " شهراً"), " من تسجيله.")),
+      h("li",null, h("span",null,"تطلب سحب أرباحك ابتداءً من ", h("b",null, cfg.min + " درهم"), "، فتصلك بالتحويل البنكي أو Cash Plus أو Wafacash."))),
+    h("p",{class:"small muted"},"لا عمولة على حسابك أنت، ولا على حساب مسجّل قبل رابطك. العمولة تُحسب فقط على المال المدفوع فعلاً، وأي تحايل يلغي الأرباح."));
+}
+function refreshAff(){
+  const sh = S.sheet; if (!sh || sh.type !== "aff") return;
+  const cfg = sh.cfg, a = sh.aff;
+  if (a === undefined || !cfg) { sh.dyn.replaceChildren(h("div",{class:"skel",style:"height:200px"})); return; }
+  if (a === null) {
+    sh.forms.replaceChildren();
+    sh.dyn.replaceChildren(...[
+      cfg.on ? null : h("div",{class:"banner warn"},"برنامج العمولة متوقف مؤقتاً."),
+      affIntro(cfg),
+      cfg.on ? h("button",{class:"btn block",type:"button",onclick: e => createAffiliate(e.currentTarget)}, "ابدأ الآن واحصل على رابطك") : null].filter(Boolean));
+    return;
+  }
+  const link = affLink(a.code);
+  const share = "📱 «" + APP_NAME + "»: تطبيق كيوصلك بالزبناء اللي محتاجين حرفتك فمدينتك. التسجيل مجاني 👇\n" + link;
+  sh.dyn.replaceChildren(...[
+    cfg.on ? null : h("div",{class:"banner warn"},"برنامج العمولة متوقف مؤقتاً: لا تُحسب عمولات جديدة، وأرباحك السابقة محفوظة."),
+    h("div",{class:"card stack aff-link",style:"gap:10px"},
+      h("span",{class:"lbl"},"رابطك الخاص"),
+      h("div",{class:"aff-url ltr"}, link),
+      h("div",{class:"row",style:"gap:8px;flex-wrap:wrap"},
+        h("button",{class:"btn sm",type:"button",onclick: async ()=>{ try { await navigator.clipboard.writeText(link); toast("نُسخ الرابط."); } catch(e){ toast("اضغط مطولاً على الرابط وانسخه."); } }}, ic("copy", 16), "نسخ"),
+        h("a",{class:"btn sm ghost",href: waLinkText(share),target:"_blank",rel:"noopener"},"واتساب"),
+        h("button",{class:"btn sm soft",type:"button",onclick:()=>{ setPromoLink(affLinkShort(a.code)); openSheet({type:"promo"}); }}, ic("megaphone", 16), "صور ومنشورات برابطك")),
+      h("p",{class:"small muted"},"رمزك: ", h("b",{class:"ltr"}, a.code), " · نسبتك: ", h("b",null, cfg.rate + "%"), " من شحنات كل حرفي لمدة " + cfg.months + " شهراً.")),
+    h("div",{class:"stats"},
+      h("div",{class:"stat"}, h("b",null, a.balance || 0), h("span",null,"درهم متاح للسحب")),
+      h("div",{class:"stat"}, h("b",null, a.pendingOut || 0), h("span",null,"درهم قيد الدفع")),
+      h("div",{class:"stat"}, h("b",null, a.earned || 0), h("span",null,"درهم ربحتها إجمالاً")),
+      h("div",{class:"stat"}, h("b",null, sh.refs == null ? "…" : sh.refs), h("span",null,"حرفي مفعّل سجّل برابطك"))),
+    h("h3",null,"العمولات"),
+    sh.comms === null ? skeletons(1) : sh.comms.length ? h("div",{class:"card",style:"gap:0"}, sh.comms.slice(0, 30).map(c => h("div",{class:"lrow"},
+      h("div",{style:"min-width:0"}, h("b",null, c.mechName || "حرفي"), h("div",{class:"small muted"}, "شحن " + c.topup + " درهم × " + c.rate + "% · " + fmtDate(c.createdAt))),
+      h("span",{class:"credit",style:"color:var(--ok)"}, "+" + c.amount)))) : empty("لا عمولات بعد. تظهر هنا حين يشحن حرفي سجّل برابطك."),
+    h("h3",null,"طلبات السحب"),
+    sh.pays === null ? skeletons(1) : sh.pays.length ? h("div",{class:"card",style:"gap:0"}, sh.pays.map(p => h("div",{class:"lrow"},
+      h("div",{style:"min-width:0"}, h("b",null, p.amount + " درهم"), h("div",{class:"small muted"}, METHODS[p.method] + " · " + fmtDate(p.createdAt))),
+      h("span",{class:"pill p-" + (p.status === "paid" ? "approved" : p.status === "rejected" ? "rejected" : "pending")}, PAYOUT_ST[p.status])))) : empty("لم تطلب أي سحب بعد.")].flat().filter(Boolean));
+  if (!sh.formKey) { sh.formKey = "pay"; sh.forms.replaceChildren(payoutForm(sh)); }
+}
+function payoutForm(sh){
+  const msg = h("p",{class:"err",role:"alert"});
+  const amt = h("input",{id:"po-amt",type:"number",inputmode:"numeric",min:"1",dir:"ltr",placeholder:"مثال: 150"});
+  const method = h("select",{id:"po-method"}, Object.entries(METHODS).map(([k,l]) => h("option",{value:k}, l)));
+  const acc = h("input",{id:"po-acc",dir:"auto",placeholder:"RIB البنكي، أو الاسم الكامل كما في البطاقة لـ Cash Plus و Wafacash"});
+  const phone = h("input",{id:"po-phone",type:"tel",dir:"ltr",value: S.profile.phone || "",placeholder:"06XXXXXXXX"});
+  const btn = h("button",{class:"btn block",type:"submit"},"طلب السحب");
+  return h("form",{class:"card stack",style:"gap:10px",novalidate:true,onsubmit: async e => {
+    e.preventDefault(); msg.textContent = "";
+    const a = sh.aff, cfg = sh.cfg, n = affInt(amt.value);
+    if (!n || n < cfg.min) { msg.textContent = "أقل مبلغ للسحب " + cfg.min + " درهم."; return; }
+    if (n > (a.balance || 0)) { msg.textContent = "رصيدك المتاح " + (a.balance || 0) + " درهم فقط."; return; }
+    if (acc.value.trim().length < 3) { msg.textContent = "اكتب معلومات الاستلام."; return; }
+    btn.disabled = true;
+    try {
+      await runTransaction(db, async tx => {
+        const aRef = doc(db,"affiliates",S.user.uid), as = await tx.get(aRef);
+        const cur = as.data(); if (!cur || (cur.balance || 0) < n) throw { code: "failed-precondition" };
+        const pRef = doc(collection(db,"payouts"));
+        tx.set(pRef, { affId: S.user.uid, name: cur.name, amount: n, method: method.value, account: acc.value.trim().slice(0,120), phone: cleanPhone(phone.value).slice(0,20), status: "pending", createdAt: Date.now(), reviewedAt: 0 });
+        tx.update(aRef, { balance: cur.balance - n, pendingOut: (cur.pendingOut || 0) + n, lastPayoutId: pRef.id });
+      });
+      toast("أُرسل طلب السحب. ستتوصل بالمبلغ بعد مراجعته."); amt.value = ""; loadAffLists(sh);
+    } catch(err){ msg.textContent = errText(err); }
+    btn.disabled = false;
+  }},
+    h("h3",null,"سحب الأرباح"),
+    h("div",{class:"grid2"},
+      h("div",{class:"field"}, h("label",{for:"po-amt"},"المبلغ (درهم)"), amt),
+      h("div",{class:"field"}, h("label",{for:"po-method"},"طريقة الاستلام"), method)),
+    h("div",{class:"field"}, h("label",{for:"po-acc"},"معلومات الاستلام"), acc),
+    h("div",{class:"field"}, h("label",{for:"po-phone"},"هاتفك"), phone),
+    msg, btn);
+}
+
+// ---------- العمولة عند قبول الشحن (داخل معاملة المشرف، القراءات قبل الكتابات) ----------
+async function commissionPlan(tx, t, amt, now){
+  const ms = await tx.get(doc(db,"mechanics",t.mechanicId)); const m = ms.exists() ? ms.data() : null;
+  if (!m || !m.referredBy || m.referredBy === t.mechanicId) return null;
+  const ss = await tx.get(doc(db,"settings","affiliate")); const cfg = { ...AFF_DEFAULT, ...(ss.exists() ? ss.data() : {}) };
+  if (!cfg.on || !cfg.rate || now - (m.createdAt || 0) > cfg.months * 30 * DAY) return null;
+  const amount = Math.floor(amt * cfg.rate / 100); if (amount <= 0) return null;
+  const affRef = doc(db,"affiliates",m.referredBy), as = await tx.get(affRef); if (!as.exists()) return null;
+  const a = as.data();
+  return { id: "c_" + t.id, affId: m.referredBy, amount, ref: doc(db,"commissions","c_" + t.id), affRef,
+    data: { affId: m.referredBy, mechanicId: t.mechanicId, mechName: m.name || "", topupId: t.id, topup: amt, rate: cfg.rate, amount, createdAt: now },
+    affUpd: { balance: (a.balance || 0) + amount, earned: (a.earned || 0) + amount } };
+}
+
+// ---------- لوحة المشرف ----------
+function adminAff(){
+  const A = S.affAdmin;
+  if (!A) { S.affAdmin = { pays: null, affs: null, cfg: null }; loadAffAdmin(); return [h("h2",null,"المسوّقون"), skeletons(2)]; }
+  const pend = (A.pays || []).filter(p => p.status === "pending");
+  return [
+    h("div",{class:"sec-h"}, h("h2",null,"المسوّقون"), h("button",{class:"link small",type:"button",onclick: loadAffAdmin},"تحديث")),
+    h("h3",null,"طلبات السحب" + (pend.length ? " (" + pend.length + ")" : "")),
+    A.pays === null ? skeletons(1) : pend.length ? pend.map(p => h("div",{class:"card"},
+      h("div",{class:"row between"}, h("span",{class:"balance",style:"font-size:1.4rem"}, p.amount + " درهم"), h("span",{class:"pill p-pending"}, PAYOUT_ST.pending)),
+      h("div",{class:"meta"}, h("span",null, p.name), h("span",null, METHODS[p.method]), h("span",{class:"ltr"}, p.phone), h("span",null, ago(p.createdAt))),
+      h("div",{class:"aff-url ltr"}, p.account),
+      h("div",{class:"row"},
+        confirmButton("حوّلتُ المبلغ","تأكيد: دُفع " + p.amount + " درهم", () => settlePayout(p, "paid"), "okb"),
+        confirmButton("رفض وإرجاع الرصيد","تأكيد الرفض", () => settlePayout(p, "rejected"), "danger")))) : empty("لا طلبات سحب معلّقة."),
+    h("h3",null,"المسوّقون"),
+    A.affs === null ? skeletons(1) : A.affs.length ? h("div",{class:"card",style:"gap:0"}, A.affs.map(a => h("div",{class:"lrow"},
+      h("div",{style:"min-width:0"}, h("b",null, a.name), h("div",{class:"small muted"}, "رمز " + a.code + " · ربح " + (a.earned || 0) + " · دُفع له " + (a.paidOut || 0))),
+      h("span",{class:"credit"}, (a.balance || 0) + " متاح")))) : empty("لا مسوّقين بعد."),
+    A.cfg ? affSettingsForm(A.cfg) : skeletons(1)];
+}
+async function loadAffAdmin(){
+  const A = S.affAdmin || (S.affAdmin = {});
+  try {
+    const [ps, as, cfg] = await Promise.all([
+      getDocs(query(collection(db,"payouts"), orderBy("createdAt","desc"), limit(100))),
+      getDocs(query(collection(db,"affiliates"), orderBy("earned","desc"), limit(100))),
+      loadAffSet()]);
+    A.pays = rows(ps); A.affs = rows(as); A.cfg = cfg;
+  } catch(e){ A.pays = A.pays || []; A.affs = A.affs || []; A.cfg = A.cfg || { ...AFF_DEFAULT }; toast(errText(e)); }
+  rerender();
+}
+async function settlePayout(p, status){
+  try {
+    await runTransaction(db, async tx => {
+      const pRef = doc(db,"payouts",p.id), aRef = doc(db,"affiliates",p.affId);
+      const ps = await tx.get(pRef), as = await tx.get(aRef);
+      if (!ps.exists() || ps.data().status !== "pending" || !as.exists()) throw { code: "failed-precondition" };
+      const a = as.data(), amt = ps.data().amount;
+      tx.update(pRef, { status, reviewedAt: Date.now() });
+      tx.update(aRef, status === "paid"
+        ? { pendingOut: Math.max(0, (a.pendingOut || 0) - amt), paidOut: (a.paidOut || 0) + amt }
+        : { pendingOut: Math.max(0, (a.pendingOut || 0) - amt), balance: (a.balance || 0) + amt });
+    });
+    notify(p.affId, "payout_" + p.id, "payout", status === "paid" ? "حُوّلت أرباحك: " + p.amount + " درهم" : "رُفض طلب السحب وأُرجع المبلغ لرصيدك", METHODS[p.method], { refId: p.id });
+    toast(status === "paid" ? "سُجّل الدفع." : "رُفض الطلب وأُرجع الرصيد."); loadAffAdmin();
+  } catch(e){ toast(errText(e)); }
+}
+function affSettingsForm(cfg){
+  const on = checkChip("af-on","برنامج العمولة مفعّل", cfg.on);
+  const rate = h("input",{id:"af-rate",type:"number",min:"0",max:"50",dir:"ltr",value: cfg.rate});
+  const months = h("input",{id:"af-months",type:"number",min:"1",max:"60",dir:"ltr",value: cfg.months});
+  const min = h("input",{id:"af-min",type:"number",min:"0",dir:"ltr",value: cfg.min});
+  const btn = h("button",{class:"btn block",type:"submit"},"حفظ إعدادات العمولة");
+  return h("form",{class:"card stack",style:"gap:10px",novalidate:true,onsubmit: async e => {
+    e.preventDefault(); btn.disabled = true;
+    const d = { on: on.get(), rate: Math.min(50, Math.max(0, affInt(rate.value) || 0)), months: Math.min(60, Math.max(1, affInt(months.value) || 12)), min: Math.min(5000, Math.max(0, affInt(min.value) || 0)), updatedAt: Date.now() };
+    try { await setDoc(doc(db,"settings","affiliate"), d); S.affAdmin.cfg = d; toast("حُفظت الإعدادات."); } catch(err){ toast(errText(err)); }
+    btn.disabled = false;
+  }},
+    h("h3",null,"إعدادات العمولة"),
+    h("div",{class:"chips"}, on.el),
+    h("div",{class:"grid2"},
+      h("div",{class:"field"}, h("label",{for:"af-rate"},"النسبة من كل شحن (%)"), rate),
+      h("div",{class:"field"}, h("label",{for:"af-months"},"المدة من تسجيل الحرفي (أشهر)"), months)),
+    h("div",{class:"field"}, h("label",{for:"af-min"},"أقل مبلغ للسحب (درهم)"), min),
+    h("p",{class:"small muted"},"مثال: بنسبة 20%، شحن 100 درهم يعطي المسوّق 20 درهم. العمولة تُحسب لحظة قبولك للشحن."),
+    btn);
+}
+
+// ---------------- الرسومات التعبيرية (SVG خفيفة، تتبع ألوان الوضع الفاتح والداكن) ----------------
+const ZS = (x, y, r) => { // نجمة زليج ثمانية صغيرة
+  const p = []; for (let i = 0; i < 16; i++) { const a = Math.PI * i / 8, rr = i % 2 ? r * .55 : r; p.push((x + rr * Math.cos(a)).toFixed(1) + " " + (y + rr * Math.sin(a)).toFixed(1)); }
+  return '<path class="a" d="M' + p.join("L") + 'z"/>';
+};
+const artSvg = body => '<svg viewBox="0 0 120 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + body + '</svg>';
+const ART = {
+  // 1) صرّح بمشكلك: هاتف يصوّر تسرب ماء
+  ask: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    '<path class="sk" d="M86 26h16v12" stroke-width="5"/><path class="a" d="M102 44c-2.4 3.4-3.6 5.2-3.6 6.8a3.6 3.6 0 0 0 7.2 0c0-1.6-1.2-3.4-3.6-6.8z"/>' +
+    '<rect class="k" x="40" y="12" width="38" height="68" rx="7"/><rect class="s" x="44" y="20" width="30" height="46" rx="3"/>' +
+    '<path class="a" d="M59 28c-5 7-8 11-8 15a8 8 0 0 0 16 0c0-4-3-8-8-15z"/><rect class="a" x="51" y="70" width="16" height="4" rx="2"/>' + ZS(22, 22, 6)),
+  // 2) توصّل بالعروض: ثلاث بطاقات بأثمنة ونجوم
+  offers: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    ['20', '42', '64'].map((y, i) => '<rect class="w" x="' + (22 + i * 4) + '" y="' + y + '" width="' + (76 - i * 8) + '" height="18" rx="4"/>' +
+      '<circle class="' + (i === 0 ? 'a' : 'm') + '" cx="' + (31 + i * 4) + '" cy="' + (+y + 9) + '" r="5"/>' +
+      '<rect class="m" x="' + (40 + i * 4) + '" y="' + (+y + 5) + '" width="' + (26 - i * 4) + '" height="3" rx="1.5"/>' +
+      '<rect class="m" x="' + (40 + i * 4) + '" y="' + (+y + 11) + '" width="' + (16 - i * 2) + '" height="3" rx="1.5"/>' +
+      '<rect class="' + (i === 0 ? 'a' : 'k') + '" x="' + (78 - i * 4) + '" y="' + (+y + 5) + '" width="14" height="8" rx="2"/>').join("") +
+    '<path class="a" d="M100 10l2.4 5 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z"/>'),
+  // 3) اختر واشتغل: منزل وعلامة تأكيد
+  deal: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    '<path class="k" d="M32 46 60 24l28 22v32H32z"/><path class="sa" d="M26 48 60 20l34 28" stroke-width="6"/>' +
+    '<rect class="s" x="53" y="56" width="14" height="22" rx="2"/><rect class="s" x="38" y="52" width="10" height="10" rx="1"/><rect class="s" x="72" y="52" width="10" height="10" rx="1"/>' +
+    '<circle class="ok" cx="90" cy="68" r="12"/><path d="m84 68 4 4 8-8" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>' + ZS(24, 24, 6)),
+  // صندوق أدوات للصفحات الفارغة
+  empty: artSvg('<circle class="l" cx="60" cy="50" r="34"/>' +
+    '<path class="sa" d="M48 36v-6a4 4 0 0 1 4-4h16a4 4 0 0 1 4 4v6" stroke-width="4"/>' +
+    '<rect class="k" x="28" y="36" width="64" height="36" rx="6"/><rect class="a" x="28" y="48" width="64" height="6"/>' +
+    '<rect class="s" x="54" y="45" width="12" height="12" rx="2"/>' + ZS(96, 22, 7)),
+  // الشتاء: مطر وسخان
+  winter: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    '<path class="w" d="M26 46a11 11 0 0 1 9-14 13 13 0 0 1 24-3 10 10 0 0 1 12 10 8 8 0 0 1-1 16H32a8 8 0 0 1-6-9z"/>' +
+    '<path class="sa" d="M36 62l-3 7M48 62l-3 7M60 62l-3 7" stroke-width="3"/>' +
+    '<rect class="k" x="78" y="26" width="22" height="46" rx="9"/><circle class="a" cx="89" cy="40" r="4.5"/><rect class="s" x="83" y="52" width="12" height="3" rx="1.5"/>' +
+    '<path class="sk" d="M85 72v8M93 72v8" stroke-width="3"/>'),
+  // الصيف: شمس ومكيف
+  summer: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    '<circle class="a" cx="34" cy="28" r="9"/><path class="sa" d="M34 12v4M34 40v4M18 28h4M46 28h4M23 17l3 3M42 36l3 3M23 39l3-3M42 20l3-3" stroke-width="3"/>' +
+    '<rect class="k" x="46" y="42" width="58" height="22" rx="5"/><path class="sk" d="M52 58h46" stroke-width="2" style="stroke:var(--surface-2)"/>' +
+    '<circle class="a" cx="96" cy="49" r="2.5"/>' +
+    '<path class="sa" d="M56 70c3 3 3 7 0 10M70 70c3 3 3 7 0 10M84 70c3 3 3 7 0 10" stroke-width="3"/>'),
+  // الدخول المدرسي: حاسوب
+  school: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    '<rect class="k" x="32" y="22" width="56" height="38" rx="4"/><rect class="s" x="36" y="26" width="48" height="30" rx="2"/>' +
+    '<path class="k" d="M22 62h76l-6 9H28z"/><path class="sa" d="M52 35l-6 6 6 6M68 35l6 6-6 6M62 33l-4 16" stroke-width="3"/>' + ZS(98, 20, 7)),
+  // الربيع: تنظيف
+  spring: artSvg('<circle class="l" cx="60" cy="48" r="38"/>' +
+    '<path class="sk" d="M76 12 58 48" stroke-width="5"/><path class="a" d="M44 46h28l5 11H39z"/>' +
+    '<path class="sk" d="M42 57l-4 18M50 57l-2 18M58 57v18M66 57l2 18M74 57l4 18" stroke-width="3"/>' +
+    '<path class="a" d="M24 30l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/><path class="a" d="M94 54l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z"/>')
+};
+const art = (k, cls) => h("span",{class:"art " + (cls || ""),svg: ART[k]});
+
+// كيف يعمل التطبيق: ثلاث خطوات مرسومة
+function howItWorks(){
+  return h("section",{class:"how"},
+    h("h2",null,"كيف يعمل؟"),
+    h("div",{class:"how-grid"},
+      [["ask","صرّح بمشكلك","صورة وسطرين"],["offers","توصّل بالعروض","من حرفيي مدينتك"],["deal","اختر واشتغل","وقيّم بعد العمل"]].map(([k, t, d], i) =>
+        h("div",{class:"how-step"}, art(k), h("b",null, (i + 1) + ". " + t), h("span",{class:"small muted"}, d)))));
+}
+
+// لافتة موسمية للزبون (تتغيّر حسب الشهر، ويمكن إخفاؤها)
+function seasonInfo(){
+  const m = new Date().getMonth() + 1;
+  if (m === 11 || m === 12 || m <= 2) return { k:"winter", art:"winter", title:"الشتاء جا", text:"تسربات السطح، السخان (الشوفو) والكهرباء: صلّحها قبل ما تكبر.", trade:"plumber", cat:"heater" };
+  if (m >= 3 && m <= 5) return { k:"spring", art:"spring", title:"تنظيف الربيع", text:"غسل الزرابي والصالونات وتنظيف الدار، بثمن تختاره أنت.", trade:"cleaning", cat:"carpets" };
+  if (m >= 6 && m <= 8) return { k:"summer", art:"summer", title:"الصهد وصل", text:"صيانة وتركيب المكيفات قبل ذروة الحر.", trade:"hvac", cat:"ac_repair" };
+  if (m === 9) return { k:"school", art:"school", title:"الدخول المدرسي", text:"إصلاح الحواسيب والطابعات والهواتف للتلاميذ والطلبة.", trade:"computers", cat:"repair" };
+  return { k:"autumn", art:"winter", title:"استعد للشتاء", text:"عزل السطح وإصلاح التسربات قبل الأمطار الأولى.", trade:"painter", cat:"waterproof" };
+}
+function seasonBanner(){
+  const s = seasonInfo(), key = "season_" + s.k + "_" + new Date().getFullYear();
+  if (!TRADE[s.trade] || ls.get(key, false)) return null;
+  const el = h("div",{class:"season"},
+    art(s.art, "season-art"),
+    h("div",{class:"season-t"}, h("b",null, s.title), h("span",{class:"small"}, s.text),
+      h("button",{class:"btn sm",type:"button",onclick:()=>openSheet({type:"new", trade:s.trade, cat: (TRADE[s.trade].cat || {})[s.cat] ? s.cat : undefined})}, "اطلب " + TRADE[s.trade].short)),
+    h("button",{class:"season-x",type:"button","aria-label":"إخفاء",svg:I.close,onclick:()=>{ ls.set(key, true); el.remove(); }}));
+  return el;
+}
+
 // =====================================================================
 //  الشعار، القائمة الجانبية، التذييل، صفحات المعلومات
 // =====================================================================
@@ -4136,6 +4755,8 @@ function sideMenu(inDrawer){
       item({ k:"notifs", label:"الإشعارات", icon:"bell", go: () => openSheet({type:"notifs"}) }),
       item({ k:"about", label:"كيف يعمل التطبيق", icon:"info", go: () => openSheet({type:"about"}) }),
       item({ k:"pricing", label:"الأسعار", icon:"tag", go: () => openSheet({type:"pricing"}) }),
+      item({ k:"promo", label:"ادعُ الحرفيين", icon:"megaphone", go: () => openSheet({type:"promo"}) }),
+      item({ k:"aff", label:"التسويق بالعمولة", icon:"coins", go: () => openSheet({type:"aff"}) }),
       item({ k:"terms", label:"الشروط والخصوصية", icon:"doc", go: () => openSheet({type:"terms"}) }),
       S.installEvt ? item({ k:"install", label:"تثبيت التطبيق", icon:"download", go: async () => { const e = S.installEvt; S.installEvt = null; e.prompt(); } }) : null,
       item({ k:"logout", label:"تسجيل الخروج", icon:"logout", go: () => signOut(auth) })),
@@ -4158,7 +4779,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape") closeDrawer(
 function siteFooter(){
   const link = (label, type) => h("button",{type:"button",class:"flink",onclick:()=>openSheet({type})}, label);
   return h("footer",{class:"site-foot"},
-    h("div",{class:"foot-brand"}, logo(28, true), h("p",{class:"small muted"},"صنايعي موثوق قريب منك، في أي مدينة. 13 حرفة في 12 جهة من المغرب.")),
+    h("div",{class:"foot-brand"}, logo(28, true), h("p",{class:"small muted"},"صنايعي موثوق قريب منك، في أي مدينة. " + TRADES.length + " حرفة يدوية ورقمية في 12 جهة من المغرب.")),
     h("div",{class:"foot-links"}, link("كيف يعمل التطبيق","about"), link("الأسعار","pricing"), link("الشروط والخصوصية","terms")),
     h("p",{class:"small muted foot-copy"}, "© " + new Date().getFullYear() + " " + APP_NAME + " · جميع الحقوق محفوظة"));
 }
@@ -4169,6 +4790,7 @@ function aboutPage(){
     h("ol",{class:"steps"}, list.map(([b, t]) => h("li",null, h("strong",null,b), h("span",{class:"small muted"}, t)))));
   return h("div",{class:"stack",style:"gap:16px"},
     h("div",{class:"about-hero"}, logo(56, true), h("p",{class:"muted"},"منصة تربط من يحتاج إصلاحاً أو خدمة بحرفيين معتمدين قريبين منه، في السيارة أو المنزل أو الورش.")),
+    howItWorks(),
     steps("إذا كنت تبحث عن حرفي", [
       ["صرّح بمشكلك","اختر الحرفة أو ابحث بكلماتك، وصف المشكل وأضف صوراً إن أمكن."],
       ["توصّل بالعروض","يرسل لك حرفيو مدينتك سعراً تقريبياً ومدة الوصول."],
